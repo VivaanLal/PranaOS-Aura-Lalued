@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="theme.css">
+    <link rel="shortcut icon" href="ChatGPT Image May 31, 2026, 08_23_54 PM.png" type="image/x-icon">
+    <title>PranaOS - Login</title>
+</head>
+
+<body>
+    <div class="bg-mesh"></div>
+    <div class="bg-grain"></div>
+    <header id="navbar">
+        <div class="brand">
+            <a href="index.html" class="brand" style="text-decoration: none;">
+                <div class="brand-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                </div>
+                <div class="brand-name">PranaOS</div>
+            </a>
+        </div>
+
+        <ul class="nav-links" id="nav-menu">
+            <li><a href="dash.html">Dashboard</a></li>
+            <li><a href="support.html">Support</a></li>
+            <li><a href="myacc.html">My Account</a></li>
+            <li><a href="login.html" class="active">Login</a></li>
+        </ul>
+
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">🌙</button>
+
+        <div class="hamburger" id="hamburger-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+    
+    <main style="display: flex; justify-content: center; align-items: center; min-height: 60vh;">
+        <div class="glass-panel" style="width: 100%; max-width: 400px; padding: 40px; border-top: 4px solid var(--accent-cyan);">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 8px;">Welcome Back</h2>
+                <p style="color: var(--text-secondary); font-size: 0.95rem;">Sign in to monitor your ecosystems</p>
+            </div>
+            
+            <form>
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-secondary);">Email</label>
+                    <input type="email" placeholder="you@example.com" style="width: 100%; padding: 12px 16px; background: var(--bg-deep); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); color: var(--text-primary); outline: none;">
+                </div>
+                <div style="margin-bottom: 24px;">
+                    <label style="display: block; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-secondary);">Password</label>
+                    <input type="password" placeholder="••••••••" style="width: 100%; padding: 12px 16px; background: var(--bg-deep); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); color: var(--text-primary); outline: none;">
+                </div>
+                <button type="button" style="width: 100%; padding: 14px; background: linear-gradient(135deg, var(--accent-emerald), var(--accent-cyan)); border: none; border-radius: var(--radius-sm); color: #fff; font-weight: 700; font-size: 1rem; cursor: pointer; box-shadow: var(--shadow-glow);">
+                    Sign In
+                </button>
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="#" style="color: var(--accent-cyan); font-size: 0.9rem;">Forgot password?</a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer class="glass-panel" style="margin-top: auto; border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 40px 6%;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 40px;">
+            <div>
+                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 16px; color: var(--accent-emerald);">Our Story</h3>
+                <p style="color: var(--text-secondary); font-size: 0.95rem;">
+                    At PranaOS, we transform urban infrastructure into intelligent ecosystems. By combining porous concrete, IoT sensors and AI-driven analytics, we help cities monitor and protect the hidden health of urban soil and tree roots. Our technology reduces tree loss, prevents flooding, and lowers maintenance costs.
+                </p>
+            </div>
+            <div>
+                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 16px; color: var(--accent-cyan);">Contact Us</h3>
+                <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 8px;"><strong>Name:</strong> Vivaan Lal</p>
+                <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 8px;"><strong>Email:</strong> vivaanlal21@gmail.com</p>
+                <p style="color: var(--text-secondary); font-size: 0.95rem;"><strong>Phone:</strong> 76768699070</p>
+            </div>
+            <div>
+                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 16px; color: var(--accent-violet);">Sitemap</h3>
+                <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px;">
+                    <li><a href="index.html" style="color: var(--text-secondary);">Landing Page</a></li>
+                    <li><a href="dash.html" style="color: var(--text-secondary);">Dashboard</a></li>
+                    <li><a href="support.html" style="color: var(--text-secondary);">Support</a></li>
+                    <li><a href="myacc.html" style="color: var(--text-secondary);">My Account</a></li>
+                </ul>
+            </div>
+        </div>
+        <div style="text-align: center; color: var(--text-muted); font-size: 0.85rem; padding-top: 20px; border-top: 1px solid var(--border-subtle);">
+            &copy; Vivaan Lal 2026
+        </div>
+    </footer>
+    <script src="theme.js"></script>
+</body>
+
+</html>
