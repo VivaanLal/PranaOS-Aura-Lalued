@@ -45,10 +45,10 @@
         <!-- Profile Card -->
         <div class="glass-panel" style="flex: 1; min-width: 300px; max-width: 400px; padding: 40px; border-top: 4px solid var(--accent-cyan); text-align: center;">
             <div id="myacc-avatar" style="width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-emerald), var(--accent-cyan)); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: 800; color: white;">
-                JD
+                
             </div>
-            <h2 id="myacc-name" style="font-size: 1.6rem; font-weight: 800; margin-bottom: 4px;">John Doe</h2>
-            <p id="myacc-email" style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 30px;">john.doe@example.com</p>
+            <h2 id="myacc-name" style="font-size: 1.6rem; font-weight: 800; margin-bottom: 4px;"></h2>
+            <p id="myacc-email" style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 30px;"></p>
             
             <button id="myacc-edit-btn" type="button" style="width: 100%; padding: 12px; margin-bottom: 15px; background: transparent; border: 1px solid var(--accent-cyan); border-radius: var(--radius-sm); color: var(--accent-cyan); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='var(--accent-cyan-dim)'" onmouseout="this.style.background='transparent'">
                 Edit Profile
@@ -58,17 +58,44 @@
             </button>
 
             <!-- Edit Profile Modal -->
-            <div id="myacc-edit-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; padding: 20px;">
-                <div class="glass-panel" style="width: 100%; max-width: 400px; padding: 30px; border-top: 4px solid var(--accent-cyan);">
-                    <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 20px;">Edit Profile</h3>
-                    <div id="edit-error" style="color: var(--danger); font-size: 0.9rem; margin-bottom: 15px; display: none;"></div>
-                    <div style="margin-bottom: 20px; text-align: left;">
-                        <label style="display: block; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-secondary);">Full Name</label>
-                        <input type="text" id="edit-name" placeholder="John Doe" style="width: 100%; padding: 12px 16px; background: var(--bg-deep); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); color: var(--text-primary); outline: none;">
+            <div id="myacc-edit-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 1000; justify-content: center; align-items: center; padding: 20px; overflow-y: auto;">
+                <div class="glass-panel" style="width: 100%; max-width: 400px; padding: 30px; border-top: 4px solid var(--accent-cyan); text-align: left; margin: auto;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3 style="font-size: 1.3rem; font-weight: 700; margin: 0;">Edit Profile</h3>
+                        <button id="edit-close-modal-btn" style="background: transparent; border: none; color: var(--text-secondary); font-size: 1.5rem; cursor: pointer;">&times;</button>
                     </div>
-                    <div style="display: flex; gap: 10px;">
-                        <button id="edit-cancel-btn" type="button" style="flex: 1; padding: 12px; background: transparent; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); color: var(--text-secondary); cursor: pointer;">Cancel</button>
-                        <button id="edit-save-btn" type="button" style="flex: 1; padding: 12px; background: linear-gradient(135deg, var(--accent-emerald), var(--accent-cyan)); border: none; border-radius: var(--radius-sm); color: #fff; font-weight: 600; cursor: pointer;">Save</button>
+                    <div id="edit-error" style="color: var(--danger); font-size: 0.9rem; margin-bottom: 15px; display: none;"></div>
+                    <div id="edit-success" style="color: var(--accent-emerald); font-size: 0.9rem; margin-bottom: 15px; display: none;"></div>
+                    
+                    <!-- Update Name -->
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-secondary);">Full Name</label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" id="edit-name" style="flex: 1; padding: 10px; background: var(--bg-deep); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); color: var(--text-primary); outline: none;">
+                            <button id="edit-save-name-btn" type="button" style="padding: 10px 15px; background: linear-gradient(135deg, var(--accent-emerald), var(--accent-cyan)); border: none; border-radius: var(--radius-sm); color: #fff; font-weight: 600; cursor: pointer;">Update</button>
+                        </div>
+                    </div>
+
+                    <hr style="border: none; border-top: 1px solid var(--border-subtle); margin: 20px 0;">
+
+                    <!-- Update Email -->
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-secondary);">New Email Address</label>
+                        <input type="email" id="edit-email" style="width: 100%; padding: 10px; margin-bottom: 10px; background: var(--bg-deep); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); color: var(--text-primary); outline: none;">
+                        <label style="display: block; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-secondary);">Current Password (Required)</label>
+                        <input type="password" id="edit-email-pw" style="width: 100%; padding: 10px; margin-bottom: 10px; background: var(--bg-deep); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); color: var(--text-primary); outline: none;">
+                        <button id="edit-save-email-btn" type="button" style="width: 100%; padding: 10px; background: transparent; border: 1px solid var(--accent-cyan); border-radius: var(--radius-sm); color: var(--accent-cyan); font-weight: 600; cursor: pointer;">Update Email</button>
+                    </div>
+
+                    <hr style="border: none; border-top: 1px solid var(--border-subtle); margin: 20px 0;">
+
+                    <!-- Update Password -->
+                    <div style="margin-bottom: 10px;">
+                        <label style="display: block; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-secondary);">Current Password</label>
+                        <input type="password" id="edit-pw-current" style="width: 100%; padding: 10px; margin-bottom: 10px; background: var(--bg-deep); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); color: var(--text-primary); outline: none;">
+                        <label style="display: block; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-secondary);">New Password</label>
+                        <input type="password" id="edit-pw-new" style="width: 100%; padding: 10px; margin-bottom: 10px; background: var(--bg-deep); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); color: var(--text-primary); outline: none;">
+                        <button id="edit-save-pw-btn" type="button" style="width: 100%; padding: 10px; background: transparent; border: 1px solid var(--accent-emerald); border-radius: var(--radius-sm); color: var(--accent-emerald); font-weight: 600; cursor: pointer;">Update Password</button>
                     </div>
                 </div>
             </div>

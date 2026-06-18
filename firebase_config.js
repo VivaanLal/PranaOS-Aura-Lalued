@@ -10,7 +10,13 @@ import {
     GoogleAuthProvider,
     signInWithPopup,
     sendPasswordResetEmail,
-    sendEmailVerification
+    sendEmailVerification,
+    fetchSignInMethodsForEmail,
+    updateEmail,
+    EmailAuthProvider,
+    reauthenticateWithCredential,
+    verifyBeforeUpdateEmail,
+    updatePassword
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
 // TODO: Replace these with your actual Firebase project configuration
@@ -146,12 +152,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const toggleLink = document.getElementById('auth-toggle-link');
         const errorDiv = document.getElementById('auth-error');
 
-        // Handle Toggle Between Sign In and Sign Up
-        toggleLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            isSignUpMode = !isSignUpMode;
-            errorDiv.style.display = 'none';
+        const urlParams = new URLSearchParams(window.location.search);
+        const presetEmail = urlParams.get('email');
+        const forcedMode = urlParams.get('mode');
 
+        if (presetEmail) {
+            const emailInput = document.getElementById('auth-email');
+            if (emailInput) {
+                emailInput.value = presetEmail;
+                emailInput.readOnly = true;
+                emailInput.style.opacity = '0.7';
+            }
+        }
+
+        const setFormMode = (toSignUp) => {
+            isSignUpMode = toSignUp;
+            errorDiv.style.display = 'none';
             if (isSignUpMode) {
                 title.textContent = "Create Account";
                 subtitle.textContent = "Join PranaOS to monitor your ecosystems";
@@ -167,6 +183,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 submitBtn.textContent = "Sign In";
                 toggleLink.textContent = "Don't have an account? Sign Up";
             }
+        };
+
+        if (forcedMode === 'signup') {
+            setFormMode(true);
+            toggleLink.style.display = 'none'; // Lock to sign up
+            subtitle.textContent = "Looks like you're new here! Let's set up your account.";
+        } else if (forcedMode === 'signin') {
+            setFormMode(false);
+            toggleLink.style.display = 'none'; // Lock to sign in
+        }
+
+        // Handle Toggle Between Sign In and Sign Up (only if not forced)
+        toggleLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            setFormMode(!isSignUpMode);
         });
 
         // Handle Form Submission
@@ -216,7 +247,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     })
                     .catch((error) => {
                         window.isSigningIn = false;
-                        errorDiv.textContent = error.message;
+                        if (error.code === 'auth/email-already-in-use') {
+                            errorDiv.textContent = "An account already exists with this email.";
+                        } else {
+                            errorDiv.textContent = error.message;
+                        }
                         errorDiv.style.display = "block";
                         submitBtn.textContent = "Sign Up";
                         submitBtn.disabled = false;
@@ -289,66 +324,150 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const editBtn = document.getElementById('myacc-edit-btn');
     const modal = document.getElementById('myacc-edit-modal');
-    const cancelBtn = document.getElementById('edit-cancel-btn');
-    const saveBtn = document.getElementById('edit-save-btn');
-    const editNameInput = document.getElementById('edit-name');
+    const closeBtn = document.getElementById('edit-close-modal-btn');
     const editError = document.getElementById('edit-error');
+    const editSuccess = document.getElementById('edit-success');
+
+    // Name Update Elements
+    const editNameInput = document.getElementById('edit-name');
+    const saveNameBtn = document.getElementById('edit-save-name-btn');
+
+    // Email Update Elements
+    const editEmailInput = document.getElementById('edit-email');
+    const editEmailPwInput = document.getElementById('edit-email-pw');
+    const saveEmailBtn = document.getElementById('edit-save-email-btn');
+
+    // Password Update Elements
+    const editPwCurrent = document.getElementById('edit-pw-current');
+    const editPwNew = document.getElementById('edit-pw-new');
+    const savePwBtn = document.getElementById('edit-save-pw-btn');
+
+    const showMsg = (element, msg, isError) => {
+        editError.style.display = 'none';
+        editSuccess.style.display = 'none';
+        if (msg) {
+            element.textContent = msg;
+            element.style.display = 'block';
+        }
+    };
 
     if (editBtn && modal) {
         editBtn.addEventListener('click', () => {
             if (auth && auth.currentUser) {
                 editNameInput.value = auth.currentUser.displayName || '';
-                editError.style.display = 'none';
+                editEmailInput.value = '';
+                editEmailPwInput.value = '';
+                editPwCurrent.value = '';
+                editPwNew.value = '';
+                showMsg(null, null); // Clear messages
                 modal.style.display = 'flex';
             }
         });
 
-        cancelBtn.addEventListener('click', () => {
+        closeBtn.addEventListener('click', () => {
             modal.style.display = 'none';
         });
 
-        saveBtn.addEventListener('click', async () => {
+        // 1. Update Name
+        saveNameBtn.addEventListener('click', async () => {
             if (!auth || !auth.currentUser) return;
             const newName = editNameInput.value.trim();
-            
-            if (!newName) {
-                editError.textContent = "Name cannot be empty.";
-                editError.style.display = 'block';
-                return;
-            }
+            if (!newName) return showMsg(editError, "Name cannot be empty.", true);
 
-            saveBtn.textContent = "Saving...";
-            saveBtn.disabled = true;
-            editError.style.display = 'none';
+            saveNameBtn.textContent = "Updating...";
+            saveNameBtn.disabled = true;
 
             try {
                 await updateProfile(auth.currentUser, { displayName: newName });
                 await auth.currentUser.reload();
-                await auth.updateCurrentUser(auth.currentUser);
                 
-                // Update UI without full reload
+                // Update UI instantly
                 const myaccName = document.getElementById('myacc-name');
                 const myaccAvatar = document.getElementById('myacc-avatar');
-                
                 if (myaccName) myaccName.textContent = newName;
                 if (myaccAvatar) {
                     const names = newName.split(' ');
                     let initials = names[0].charAt(0).toUpperCase();
-                    if (names.length > 1) {
-                        initials += names[names.length - 1].charAt(0).toUpperCase();
-                    }
+                    if (names.length > 1) initials += names[names.length - 1].charAt(0).toUpperCase();
                     myaccAvatar.textContent = initials;
                 }
                 
-                modal.style.display = 'none';
+                showMsg(editSuccess, "Name updated successfully!", false);
             } catch (error) {
-                editError.textContent = error.message;
-                editError.style.display = 'block';
+                showMsg(editError, error.message, true);
             } finally {
-                saveBtn.textContent = "Save";
-                saveBtn.disabled = false;
+                saveNameBtn.textContent = "Update";
+                saveNameBtn.disabled = false;
             }
         });
+
+        // 2. Update Email
+        saveEmailBtn.addEventListener('click', async () => {
+            if (!auth || !auth.currentUser) return;
+            const newEmail = editEmailInput.value.trim();
+            const password = editEmailPwInput.value;
+            
+            if (!newEmail || !password) return showMsg(editError, "Both email and current password are required.", true);
+
+            saveEmailBtn.textContent = "Updating...";
+            saveEmailBtn.disabled = true;
+
+            try {
+                // Re-authenticate first
+                const credential = EmailAuthProvider.credential(auth.currentUser.email, password);
+                await reauthenticateWithCredential(auth.currentUser, credential);
+                
+                // Call verification
+                await verifyBeforeUpdateEmail(auth.currentUser, newEmail);
+                
+                showMsg(editSuccess, "A verification link has been sent to your NEW email. Please click it to complete the change.", false);
+                editEmailInput.value = '';
+                editEmailPwInput.value = '';
+            } catch (error) {
+                if (error.code === 'auth/wrong-password') {
+                    showMsg(editError, "Incorrect current password.", true);
+                } else {
+                    showMsg(editError, error.message, true);
+                }
+            } finally {
+                saveEmailBtn.textContent = "Update Email";
+                saveEmailBtn.disabled = false;
+            }
+        });
+
+        // 3. Update Password
+        savePwBtn.addEventListener('click', async () => {
+            if (!auth || !auth.currentUser) return;
+            const currentPw = editPwCurrent.value;
+            const newPw = editPwNew.value;
+            
+            if (!currentPw || !newPw) return showMsg(editError, "Both current and new passwords are required.", true);
+            if (newPw.length < 6) return showMsg(editError, "New password must be at least 6 characters.", true);
+
+            savePwBtn.textContent = "Updating...";
+            savePwBtn.disabled = true;
+
+            try {
+                // Re-authenticate first
+                const credential = EmailAuthProvider.credential(auth.currentUser.email, currentPw);
+                await reauthenticateWithCredential(auth.currentUser, credential);
+                
+                // Update password
+                await updatePassword(auth.currentUser, newPw);
+                
+                showMsg(editSuccess, "Password updated successfully!", false);
+                editPwCurrent.value = '';
+                editPwNew.value = '';
+            } catch (error) {
+                if (error.code === 'auth/wrong-password') {
+                    showMsg(editError, "Incorrect current password.", true);
+                } else {
+                    showMsg(editError, error.message, true);
+                }
+            } finally {
+                savePwBtn.textContent = "Update Password";
+                savePwBtn.disabled = false;
+            }
         });
     }
 });
@@ -359,7 +478,45 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!isVerifyPage) return;
 
     const checkBtn = document.getElementById('verify-check-btn');
+    const signOutBtn = document.getElementById('verify-signout-btn');
+    const resendBtn = document.getElementById('verify-resend-btn');
     const verifyError = document.getElementById('verify-error');
+
+    if (resendBtn) {
+        resendBtn.addEventListener('click', async () => {
+            if (!auth || !auth.currentUser) return;
+            
+            resendBtn.textContent = "Sending...";
+            resendBtn.disabled = true;
+            if (verifyError) verifyError.style.display = 'none';
+
+            try {
+                await sendEmailVerification(auth.currentUser);
+                if (verifyError) {
+                    verifyError.style.color = "var(--accent-emerald)";
+                    verifyError.textContent = "Verification email resent! Please check your inbox and spam folder.";
+                    verifyError.style.display = 'block';
+                }
+            } catch (error) {
+                if (verifyError) {
+                    verifyError.style.color = "var(--danger)";
+                    verifyError.textContent = "Error: " + error.message;
+                    verifyError.style.display = 'block';
+                }
+            } finally {
+                resendBtn.textContent = "Resend Verification Email";
+                resendBtn.disabled = false;
+            }
+        });
+    }
+
+    if (signOutBtn) {
+        signOutBtn.addEventListener('click', () => {
+            signOut(auth).then(() => {
+                window.location.href = "login.html";
+            });
+        });
+    }
 
     if (checkBtn) {
         checkBtn.addEventListener('click', async () => {
@@ -392,6 +549,122 @@ document.addEventListener('DOMContentLoaded', () => {
                 checkBtn.textContent = "I have verified my email";
                 checkBtn.disabled = false;
             }
+        });
+    }
+
+    // --- Change Email Logic ---
+    const emailDisplay = document.getElementById('verify-email-display');
+    const changeEmailBtn = document.getElementById('verify-change-email-btn');
+    const changeEmailForm = document.getElementById('verify-change-email-form');
+    const cancelChangeBtn = document.getElementById('verify-cancel-change-btn');
+    const saveEmailBtn = document.getElementById('verify-save-email-btn');
+    const newEmailInput = document.getElementById('verify-new-email');
+
+    // Update display on load if auth is ready
+    auth.onAuthStateChanged((user) => {
+        if (user && emailDisplay) {
+            emailDisplay.textContent = user.email;
+        }
+    });
+
+    if (changeEmailBtn && changeEmailForm) {
+        changeEmailBtn.addEventListener('click', () => {
+            changeEmailForm.style.display = 'block';
+            if (verifyError) verifyError.style.display = 'none';
+        });
+
+        cancelChangeBtn.addEventListener('click', () => {
+            changeEmailForm.style.display = 'none';
+        });
+
+        saveEmailBtn.addEventListener('click', async () => {
+            const newEmail = newEmailInput.value.trim();
+            if (!newEmail) return;
+
+            saveEmailBtn.textContent = "Updating...";
+            saveEmailBtn.disabled = true;
+            if (verifyError) verifyError.style.display = 'none';
+
+            try {
+                await updateEmail(auth.currentUser, newEmail);
+                await sendEmailVerification(auth.currentUser);
+                emailDisplay.textContent = newEmail;
+                changeEmailForm.style.display = 'none';
+                if (verifyError) {
+                    verifyError.style.color = "var(--accent-emerald)";
+                    verifyError.textContent = "Email updated and new verification link sent!";
+                    verifyError.style.display = 'block';
+                }
+            } catch (error) {
+                if (verifyError) {
+                    verifyError.style.color = "var(--danger)";
+                    verifyError.textContent = "Error: " + error.message;
+                    verifyError.style.display = 'block';
+                }
+            } finally {
+                saveEmailBtn.textContent = "Update Email";
+                saveEmailBtn.disabled = false;
+            }
+        });
+    }
+});
+
+// ─── LANDING PAGE LOGIC (INDEX.HTML) ────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+    const isIndexPage = window.location.pathname.endsWith('/') || window.location.pathname.endsWith('index.html');
+    if (!isIndexPage) return;
+
+    const landingForm = document.getElementById('landing-auth-form');
+    const landingEmail = document.getElementById('landing-email');
+    const landingSubmitBtn = document.getElementById('landing-submit-btn');
+    const landingError = document.getElementById('landing-error');
+    const landingGoogleBtn = document.getElementById('landing-google-btn');
+
+    if (landingForm) {
+        landingForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = landingEmail.value.trim();
+            if (!email) return;
+
+            landingSubmitBtn.textContent = "Checking...";
+            landingSubmitBtn.disabled = true;
+            if (landingError) landingError.style.display = 'none';
+
+            try {
+                const methods = await fetchSignInMethodsForEmail(auth, email);
+                if (methods && methods.length > 0) {
+                    // Email exists, redirect to login mode
+                    window.location.href = `login.html?email=${encodeURIComponent(email)}&mode=signin`;
+                } else {
+                    // Email does not exist, redirect to signup mode
+                    window.location.href = `login.html?email=${encodeURIComponent(email)}&mode=signup`;
+                }
+            } catch (error) {
+                if (landingError) {
+                    landingError.textContent = "Error checking email. Make sure Email Enumeration Protection is disabled in Firebase.";
+                    landingError.style.display = 'block';
+                }
+            } finally {
+                landingSubmitBtn.textContent = "Continue";
+                landingSubmitBtn.disabled = false;
+            }
+        });
+    }
+
+    if (landingGoogleBtn) {
+        landingGoogleBtn.addEventListener('click', () => {
+            if (!auth) return;
+            const provider = new GoogleAuthProvider();
+            signInWithPopup(auth, provider)
+                .then(() => {
+                    window.location.href = "dash.html";
+                })
+                .catch((error) => {
+                    if (landingError) {
+                        landingError.textContent = error.message;
+                        landingError.style.display = 'block';
+                    }
+                });
         });
     }
 });
