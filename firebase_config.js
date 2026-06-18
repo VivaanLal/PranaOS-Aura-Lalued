@@ -9,7 +9,8 @@ import {
     updateProfile,
     GoogleAuthProvider,
     signInWithPopup,
-    sendPasswordResetEmail
+    sendPasswordResetEmail,
+    sendEmailVerification
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
 // TODO: Replace these with your actual Firebase project configuration
@@ -83,8 +84,26 @@ if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
                 });
             }
 
-            // Redirect from login page to dashboard
-            if (isAuthPage) {
+            const isVerifyPage = window.location.pathname.includes('verify.html');
+
+            if (isAuthPage && !window.isSigningIn) {
+                if (user.emailVerified) {
+                    window.location.href = "dash.html";
+                } else {
+                    window.location.href = "verify.html";
+                }
+            }
+
+            // Route protection for unverified users trying to access dashboard/account
+            const restrictedRoutes = ['dash.html', 'myacc.html'];
+            const isRestricted = restrictedRoutes.some(route => window.location.pathname.includes(route));
+            
+            if (isRestricted && !user.emailVerified) {
+                window.location.href = "verify.html";
+            }
+
+            // Auto-redirect from verify page if they are already verified
+            if (isVerifyPage && user.emailVerified) {
                 window.location.href = "dash.html";
             }
         } else {
@@ -97,8 +116,10 @@ if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
                 link.href = "login.html";
             });
 
+            const isVerifyPage = window.location.pathname.includes('verify.html');
+
             // Protect authenticated routes
-            const protectedRoutes = ['dash.html', 'myacc.html'];
+            const protectedRoutes = ['dash.html', 'myacc.html', 'verify.html'];
             const isProtected = protectedRoutes.some(route => window.location.pathname.includes(route));
 
             if (isProtected) {
@@ -135,12 +156,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 title.textContent = "Create Account";
                 subtitle.textContent = "Join PranaOS to monitor your ecosystems";
                 nameField.style.display = "block";
+                document.getElementById('auth-name').required = true;
                 submitBtn.textContent = "Sign Up";
                 toggleLink.textContent = "Already have an account? Sign In";
             } else {
                 title.textContent = "Welcome Back";
                 subtitle.textContent = "Sign in to monitor your ecosystems";
                 nameField.style.display = "none";
+                document.getElementById('auth-name').required = false;
                 submitBtn.textContent = "Sign In";
                 toggleLink.textContent = "Don't have an account? Sign Up";
             }
@@ -163,23 +186,36 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.textContent = "Please wait...";
             submitBtn.disabled = true;
             errorDiv.style.display = "none";
+            window.isSigningIn = true;
 
             if (isSignUpMode) {
+                if (!name || name.trim() === "") {
+                    errorDiv.textContent = "Please enter your full name.";
+                    errorDiv.style.display = "block";
+                    submitBtn.textContent = "Sign Up";
+                    submitBtn.disabled = false;
+                    window.isSigningIn = false;
+                    return;
+                }
+
                 createUserWithEmailAndPassword(auth, email, password)
                     .then(async (userCredential) => {
                         // Update the profile with the name
                         await updateProfile(userCredential.user, {
                             displayName: name
                         });
+                        // Send verification email
+                        await sendEmailVerification(userCredential.user);
                         // Reload the user to ensure the new displayName is picked up globally
                         await userCredential.user.reload();
                         // Force update of the profile in local persistence to fix the name bug
                         await auth.updateCurrentUser(auth.currentUser);
                     })
                     .then(() => {
-                        window.location.href = "dash.html";
+                        window.location.href = "verify.html";
                     })
                     .catch((error) => {
+                        window.isSigningIn = false;
                         errorDiv.textContent = error.message;
                         errorDiv.style.display = "block";
                         submitBtn.textContent = "Sign Up";
@@ -191,6 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         window.location.href = "dash.html";
                     })
                     .catch((error) => {
+                        window.isSigningIn = false;
                         errorDiv.textContent = "Invalid email or password.";
                         errorDiv.style.display = "block";
                         submitBtn.textContent = "Sign In";
@@ -203,12 +240,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (googleBtn) {
             googleBtn.addEventListener('click', () => {
                 if (!auth) return;
+                window.isSigningIn = true;
                 const provider = new GoogleAuthProvider();
                 signInWithPopup(auth, provider)
                     .then((result) => {
                         window.location.href = "dash.html";
                     })
                     .catch((error) => {
+                        window.isSigningIn = false;
                         errorDiv.textContent = error.message;
                         errorDiv.style.display = "block";
                     });
@@ -240,5 +279,119 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
             });
         }
+    }
+});
+
+// ─── EDIT PROFILE LOGIC (MYACC.HTML) ────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+    const isMyaccPage = window.location.pathname.includes('myacc.html');
+    if (!isMyaccPage) return;
+
+    const editBtn = document.getElementById('myacc-edit-btn');
+    const modal = document.getElementById('myacc-edit-modal');
+    const cancelBtn = document.getElementById('edit-cancel-btn');
+    const saveBtn = document.getElementById('edit-save-btn');
+    const editNameInput = document.getElementById('edit-name');
+    const editError = document.getElementById('edit-error');
+
+    if (editBtn && modal) {
+        editBtn.addEventListener('click', () => {
+            if (auth && auth.currentUser) {
+                editNameInput.value = auth.currentUser.displayName || '';
+                editError.style.display = 'none';
+                modal.style.display = 'flex';
+            }
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        saveBtn.addEventListener('click', async () => {
+            if (!auth || !auth.currentUser) return;
+            const newName = editNameInput.value.trim();
+            
+            if (!newName) {
+                editError.textContent = "Name cannot be empty.";
+                editError.style.display = 'block';
+                return;
+            }
+
+            saveBtn.textContent = "Saving...";
+            saveBtn.disabled = true;
+            editError.style.display = 'none';
+
+            try {
+                await updateProfile(auth.currentUser, { displayName: newName });
+                await auth.currentUser.reload();
+                await auth.updateCurrentUser(auth.currentUser);
+                
+                // Update UI without full reload
+                const myaccName = document.getElementById('myacc-name');
+                const myaccAvatar = document.getElementById('myacc-avatar');
+                
+                if (myaccName) myaccName.textContent = newName;
+                if (myaccAvatar) {
+                    const names = newName.split(' ');
+                    let initials = names[0].charAt(0).toUpperCase();
+                    if (names.length > 1) {
+                        initials += names[names.length - 1].charAt(0).toUpperCase();
+                    }
+                    myaccAvatar.textContent = initials;
+                }
+                
+                modal.style.display = 'none';
+            } catch (error) {
+                editError.textContent = error.message;
+                editError.style.display = 'block';
+            } finally {
+                saveBtn.textContent = "Save";
+                saveBtn.disabled = false;
+            }
+        });
+        });
+    }
+});
+
+// ─── VERIFY EMAIL LOGIC (VERIFY.HTML) ───────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+    const isVerifyPage = window.location.pathname.includes('verify.html');
+    if (!isVerifyPage) return;
+
+    const checkBtn = document.getElementById('verify-check-btn');
+    const verifyError = document.getElementById('verify-error');
+
+    if (checkBtn) {
+        checkBtn.addEventListener('click', async () => {
+            if (!auth || !auth.currentUser) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            checkBtn.textContent = "Checking...";
+            checkBtn.disabled = true;
+            if (verifyError) verifyError.style.display = 'none';
+
+            try {
+                await auth.currentUser.reload();
+                
+                if (auth.currentUser.emailVerified) {
+                    window.location.href = "dash.html";
+                } else {
+                    if (verifyError) {
+                        verifyError.textContent = "Email is not verified yet. Please check your inbox and click the link.";
+                        verifyError.style.display = 'block';
+                    }
+                }
+            } catch (error) {
+                if (verifyError) {
+                    verifyError.textContent = "Error checking verification status.";
+                    verifyError.style.display = 'block';
+                }
+            } finally {
+                checkBtn.textContent = "I have verified my email";
+                checkBtn.disabled = false;
+            }
+        });
     }
 });
