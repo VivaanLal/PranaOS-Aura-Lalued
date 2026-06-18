@@ -30,7 +30,8 @@ if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
     app = initializeApp(firebaseConfig);
     auth = getAuth(app);
 
-    // Global Auth State Observer
+    // Global Auth State Observer — wait for DOM to be ready
+    document.addEventListener('DOMContentLoaded', () => {
     onAuthStateChanged(auth, (user) => {
         const isAuthPage = window.location.pathname.includes('login.html');
 
@@ -105,6 +106,7 @@ if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
             }
         }
     });
+    }); // end DOMContentLoaded
 } else {
     console.warn("Firebase is not initialized. Please add your config keys to firebase_config.js");
 }
