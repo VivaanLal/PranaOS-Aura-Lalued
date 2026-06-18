@@ -28,7 +28,7 @@
             <li><a href="dash.html">Dashboard</a></li>
             <li><a href="support.html">Support</a></li>
             <li><a href="myacc.html" class="active">My Account</a></li>
-            <li><a href="login.html">Login</a></li>
+            <li><a href="login.html" class="auth-link">Login</a></li>
         </ul>
 
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">🌙</button>
@@ -44,47 +44,49 @@
         
         <!-- Profile Card -->
         <div class="glass-panel" style="flex: 1; min-width: 300px; max-width: 400px; padding: 40px; border-top: 4px solid var(--accent-cyan); text-align: center;">
-            <div style="width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-emerald), var(--accent-cyan)); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: 800; color: white;">
+            <div id="myacc-avatar" style="width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-emerald), var(--accent-cyan)); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: 800; color: white;">
                 JD
             </div>
-            <h2 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 4px;">John Doe</h2>
-            <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 30px;">john.doe@example.com</p>
+            <h2 id="myacc-name" style="font-size: 1.6rem; font-weight: 800; margin-bottom: 4px;">John Doe</h2>
+            <p id="myacc-email" style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 30px;">john.doe@example.com</p>
             
             <button type="button" style="width: 100%; padding: 12px; margin-bottom: 15px; background: transparent; border: 1px solid var(--accent-cyan); border-radius: var(--radius-sm); color: var(--accent-cyan); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='var(--accent-cyan-dim)'" onmouseout="this.style.background='transparent'">
                 Edit Profile
             </button>
-            <button type="button" style="width: 100%; padding: 12px; background: transparent; border: 1px solid var(--danger); border-radius: var(--radius-sm); color: var(--danger); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(239, 68, 68, 0.1)'" onmouseout="this.style.background='transparent'">
+            <button id="myacc-signout-btn" type="button" style="width: 100%; padding: 12px; background: transparent; border: 1px solid var(--danger); border-radius: var(--radius-sm); color: var(--danger); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(239, 68, 68, 0.1)'" onmouseout="this.style.background='transparent'">
                 Sign Out
             </button>
+            
+            <div style="margin-top: 30px; padding: 20px; background: var(--bg-deep); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); text-align: left;">
+                <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; color: var(--accent-cyan);">Subscription Tier</h3>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <span style="color: var(--text-secondary); font-size: 0.95rem;">Current Plan</span>
+                    <span style="background: var(--accent-emerald-dim); color: var(--accent-emerald); padding: 4px 12px; border-radius: var(--radius-xl); font-size: 0.8rem; font-weight: 700;">ACTIVE</span>
+                </div>
+                <div style="font-size: 1.3rem; font-weight: 800; margin-bottom: 4px;">Free Tier</div>
+                <div style="font-size: 1.1rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px;">₹0 INR<span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 400;"> / month</span></div>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px;">Upgrade your plan to unlock advanced AI insights, extended historical data, and premium sensor features.</p>
+                <a href="tiers.html" style="display: block; text-align: center; padding: 12px; background: linear-gradient(135deg, var(--accent-emerald), var(--accent-cyan)); border: none; border-radius: var(--radius-sm); color: #fff; font-weight: 700; font-size: 0.95rem; text-decoration: none; box-shadow: var(--shadow-glow);">
+                    Upgrade Plan
+                </a>
+            </div>
         </div>
 
-        <!-- Account Details / Billing -->
+        <!-- Account Details -->
         <div class="glass-panel" style="flex: 2; min-width: 320px; max-width: 600px; padding: 40px; border-top: 4px solid var(--accent-emerald);">
             <div style="margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-subtle); padding-bottom: 15px;">
-                <h2 style="font-size: 1.4rem; font-weight: 700;">Subscription & Billing</h2>
-                <span style="background: var(--accent-emerald-dim); color: var(--accent-emerald); padding: 4px 12px; border-radius: var(--radius-xl); font-size: 0.8rem; font-weight: 700;">ACTIVE</span>
+                <h2 style="font-size: 1.4rem; font-weight: 700;">Account Details</h2>
             </div>
             
             <div style="display: flex; flex-direction: column; gap: 20px;">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <div style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 4px;">Current Plan</div>
-                        <div style="font-size: 1.1rem; font-weight: 600;">Pro Ecosystem Tier</div>
-                    </div>
-                    <div style="text-align: right;">
-                        <div style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 4px;">Billing Cycle</div>
-                        <div style="font-size: 1.1rem; font-weight: 600;">Monthly</div>
-                    </div>
-                </div>
-                
                 <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-deep); padding: 20px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
                     <div>
-                        <div style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 4px;">Next Payment</div>
-                        <div style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary);">$29.99 <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">on July 15, 2026</span></div>
+                        <div style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 4px;">Current Plan</div>
+                        <div style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary);">Free Tier — <span style="color: var(--accent-emerald);">₹0 INR</span></div>
                     </div>
-                    <button type="button" style="padding: 8px 16px; background: var(--bg-elevated); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); color: var(--text-primary); font-size: 0.9rem; cursor: pointer;">
-                        Update Payment
-                    </button>
+                    <a href="tiers.html" style="padding: 8px 16px; background: var(--bg-elevated); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); color: var(--text-primary); font-size: 0.9rem; text-decoration: none;">
+                        View Tiers
+                    </a>
                 </div>
                 
                 <div style="margin-top: 10px;">
@@ -139,6 +141,7 @@
             &copy; Vivaan Lal 2026
         </div>
     </footer>
+    <script type="module" src="firebase_config.js"></script>
     <script src="theme.js"></script>
 </body>
 </html>

@@ -44,10 +44,24 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Restore saved theme
-    const savedTheme = localStorage.getItem('pranaos-theme') || 'dark';
-    if (savedTheme === 'light') setTheme('light');
+    // Force reset local storage just once to apply the new time-based default
+    if (!localStorage.getItem('pranaos-theme-reset')) {
+        localStorage.removeItem('pranaos-theme');
+        localStorage.setItem('pranaos-theme-reset', 'true');
+    }
 
+    // Restore saved theme or determine based on time
+    let savedTheme = localStorage.getItem('pranaos-theme');
+    if (!savedTheme) {
+        const hour = new Date().getHours();
+        savedTheme = (hour >= 18 || hour < 6) ? 'dark' : 'light';
+    }
+    
+    if (savedTheme === 'light') {
+        setTheme('light');
+    } else {
+        setTheme('dark');
+    }
     if (themeToggleBtn) {
         themeToggleBtn.addEventListener('click', () => {
             const current = htmlEl.getAttribute('data-theme') || 'dark';
