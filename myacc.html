@@ -7,9 +7,11 @@
     <link rel="shortcut icon" href="ChatGPT Image May 31, 2026, 08_23_54 PM.png" type="image/x-icon">
     <title>PranaOS - My Account</title>
 </head>
+
 <body>
     <div class="bg-mesh"></div>
     <div class="bg-grain"></div>
+    
     <header id="navbar">
         <div class="brand">
             <a href="index.html" class="brand" style="text-decoration: none;">
@@ -21,13 +23,16 @@
                 <div class="brand-name">PranaOS</div>
             </a>
         </div>
+
         <ul class="nav-links" id="nav-menu">
             <li><a href="dash.html">Dashboard</a></li>
             <li><a href="support.html">Support</a></li>
             <li><a href="myacc.html" class="active">My Account</a></li>
             <li><a href="login.html" class="auth-link">Login</a></li>
         </ul>
+
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">🌙</button>
+
         <div class="hamburger" id="hamburger-btn">
             <span></span>
             <span></span>
@@ -36,18 +41,22 @@
     </header>
 
     <main style="display: flex; justify-content: center; align-items: flex-start; min-height: 70vh; padding-top: 40px; gap: 40px; flex-wrap: wrap;">
+        
+        <!-- Profile Card -->
         <div class="glass-panel" style="flex: 1; min-width: 300px; max-width: 400px; padding: 40px; border-top: 4px solid var(--accent-cyan); text-align: center;">
             <div id="myacc-avatar" style="width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-emerald), var(--accent-cyan)); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: 800; color: white;">
                 JD
             </div>
             <h2 id="myacc-name" style="font-size: 1.6rem; font-weight: 800; margin-bottom: 4px;">John Doe</h2>
             <p id="myacc-email" style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 30px;">john.doe@example.com</p>
+            
             <button type="button" style="width: 100%; padding: 12px; margin-bottom: 15px; background: transparent; border: 1px solid var(--accent-cyan); border-radius: var(--radius-sm); color: var(--accent-cyan); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='var(--accent-cyan-dim)'" onmouseout="this.style.background='transparent'">
                 Edit Profile
             </button>
             <button id="myacc-signout-btn" type="button" style="width: 100%; padding: 12px; background: transparent; border: 1px solid var(--danger); border-radius: var(--radius-sm); color: var(--danger); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(239, 68, 68, 0.1)'" onmouseout="this.style.background='transparent'">
                 Sign Out
             </button>
+            
             <div style="margin-top: 30px; padding: 20px; background: var(--bg-deep); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); text-align: left;">
                 <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; color: var(--accent-cyan);">Subscription Tier</h3>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
@@ -63,10 +72,12 @@
             </div>
         </div>
 
+        <!-- Account Details -->
         <div class="glass-panel" style="flex: 2; min-width: 320px; max-width: 600px; padding: 40px; border-top: 4px solid var(--accent-emerald);">
             <div style="margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-subtle); padding-bottom: 15px;">
                 <h2 style="font-size: 1.4rem; font-weight: 700;">Account Details</h2>
             </div>
+            
             <div style="display: flex; flex-direction: column; gap: 20px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-deep); padding: 20px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
                     <div>
@@ -77,6 +88,7 @@
                         View Tiers
                     </a>
                 </div>
+                
                 <div style="margin-top: 10px;">
                     <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 15px;">Active Sensors</h3>
                     <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px;">
@@ -98,6 +110,7 @@
                 </div>
             </div>
         </div>
+
     </main>
 
     <footer class="glass-panel" style="margin-top: auto; border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 40px 6%;">

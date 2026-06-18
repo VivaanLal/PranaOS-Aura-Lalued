@@ -1,17 +1,20 @@
+// ─── Navbar scroll & hamburger ──────────────
 document.addEventListener('DOMContentLoaded', () => {
-    let navbar = document.getElementById('navbar');
-    let hamburgerBtn = document.getElementById('hamburger-btn');
-    let navMenu = document.getElementById('nav-menu');
+    const navbar = document.getElementById('navbar');
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const navMenu = document.getElementById('nav-menu');
 
     if (navbar && hamburgerBtn && navMenu) {
         window.addEventListener('scroll', () => {
             navbar.classList.toggle('scrolled', window.scrollY > 60);
         });
+
         hamburgerBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             hamburgerBtn.classList.toggle('active');
             navMenu.classList.toggle('active');
         });
+
         document.addEventListener('click', (e) => {
             if (!navMenu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
                 hamburgerBtn.classList.remove('active');
@@ -20,37 +23,49 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    let themeBtn = document.getElementById('theme-toggle');
-    let html = document.documentElement;
+    // ─── Theme Toggle ────────────────────────────
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const htmlEl = document.documentElement;
 
-    function setTheme(t) {
-        html.setAttribute('data-theme', t);
-        if (themeBtn) themeBtn.textContent = t === 'light' ? '☀️' : '🌙';
-        localStorage.setItem('pranaos-theme', t);
-        document.querySelectorAll('input[type="range"]').forEach(inp => {
-            let min = parseFloat(inp.min) || 0;
-            let max = parseFloat(inp.max) || 100;
-            let val = parseFloat(inp.value) || 0;
-            let pct = ((val - min) / (max - min)) * 100;
-            inp.style.background = `linear-gradient(to right, var(--accent-emerald) 0%, var(--accent-cyan) ${pct}%, var(--bg-elevated) ${pct}%)`;
+    function setTheme(theme) {
+        htmlEl.setAttribute('data-theme', theme);
+        if (themeToggleBtn) {
+            themeToggleBtn.textContent = theme === 'light' ? '☀️' : '🌙';
+        }
+        localStorage.setItem('pranaos-theme', theme);
+
+        // Re-apply slider track fills (colors change per theme) - for dash.html
+        document.querySelectorAll('input[type="range"]').forEach(input => {
+            const min = parseFloat(input.min) || 0;
+            const max = parseFloat(input.max) || 100;
+            const val = parseFloat(input.value) || 0;
+            const pct = ((val - min) / (max - min)) * 100;
+            input.style.background = `linear-gradient(to right, var(--accent-emerald) 0%, var(--accent-cyan) ${pct}%, var(--bg-elevated) ${pct}%)`;
         });
     }
 
+    // Force reset local storage just once to apply the new time-based default
     if (!localStorage.getItem('pranaos-theme-reset')) {
         localStorage.removeItem('pranaos-theme');
         localStorage.setItem('pranaos-theme-reset', 'true');
     }
-    let saved = localStorage.getItem('pranaos-theme');
-    if (!saved) {
-        let h = new Date().getHours();
-        saved = (h >= 18 || h < 6) ? 'dark' : 'light';
-    }
-    setTheme(saved);
 
-    if (themeBtn) {
-        themeBtn.addEventListener('click', () => {
-            let cur = html.getAttribute('data-theme') || 'dark';
-            setTheme(cur === 'dark' ? 'light' : 'dark');
+    // Restore saved theme or determine based on time
+    let savedTheme = localStorage.getItem('pranaos-theme');
+    if (!savedTheme) {
+        const hour = new Date().getHours();
+        savedTheme = (hour >= 18 || hour < 6) ? 'dark' : 'light';
+    }
+    
+    if (savedTheme === 'light') {
+        setTheme('light');
+    } else {
+        setTheme('dark');
+    }
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+            const current = htmlEl.getAttribute('data-theme') || 'dark';
+            setTheme(current === 'dark' ? 'light' : 'dark');
         });
     }
 });
