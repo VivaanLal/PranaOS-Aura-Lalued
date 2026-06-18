@@ -166,14 +166,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (isSignUpMode) {
                 createUserWithEmailAndPassword(auth, email, password)
-                    .then((userCredential) => {
+                    .then(async (userCredential) => {
                         // Update the profile with the name
-                        return updateProfile(userCredential.user, {
+                        await updateProfile(userCredential.user, {
                             displayName: name
-                        }).then(() => {
-                            // Reload the user to ensure the new displayName is picked up globally
-                            return userCredential.user.reload();
                         });
+                        // Reload the user to ensure the new displayName is picked up globally
+                        await userCredential.user.reload();
+                        // Force update of the profile in local persistence to fix the name bug
+                        await auth.updateCurrentUser(auth.currentUser);
                     })
                     .then(() => {
                         window.location.href = "dash.html";
