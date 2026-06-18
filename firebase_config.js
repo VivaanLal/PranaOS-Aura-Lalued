@@ -165,19 +165,18 @@ document.addEventListener('DOMContentLoaded', () => {
             errorDiv.style.display = "none";
 
             if (isSignUpMode) {
-                let createdUser;
                 createUserWithEmailAndPassword(auth, email, password)
                     .then((userCredential) => {
-                        createdUser = userCredential.user;
-                        return updateProfile(createdUser, {
+                        // Update the profile with the name
+                        return updateProfile(userCredential.user, {
                             displayName: name
+                        }).then(() => {
+                            // Reload the user to ensure the new displayName is picked up globally
+                            return userCredential.user.reload();
                         });
                     })
                     .then(() => {
-                        // Force update of the profile in local state
-                        auth.updateCurrentUser(createdUser).then(() => {
-                            window.location.href = "dash.html";
-                        });
+                        window.location.href = "dash.html";
                     })
                     .catch((error) => {
                         errorDiv.textContent = error.message;
