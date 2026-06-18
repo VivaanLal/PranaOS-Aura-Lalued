@@ -12,9 +12,7 @@
     <link rel="stylesheet" href="theme.css">
     <style>
 
-        /* ═══════════════════════════════════════════════
            CONTROL PANEL
-           ═══════════════════════════════════════════════ */
         .controls-section {
             margin-bottom: 36px;
             animation: fadeSlideUp 0.8s 0.1s var(--transition-smooth) both;
@@ -55,7 +53,6 @@
             font-size: 0.85rem;
         }
 
-        /* Custom range slider */
         input[type="range"] {
             -webkit-appearance: none;
             appearance: none;
@@ -119,7 +116,6 @@
             background: linear-gradient(90deg, var(--accent-emerald), var(--accent-cyan));
         }
 
-        /* Custom select */
         .custom-select {
             padding: 10px 14px;
             border-radius: var(--radius-sm);
@@ -144,7 +140,6 @@
             color: var(--text-primary);
         }
 
-        /* Weather buttons */
         .weather-group {
             display: flex;
             gap: 6px;
@@ -180,9 +175,7 @@
             box-shadow: 0 0 16px rgba(52, 211, 153, 0.12);
         }
 
-        /* ═══════════════════════════════════════════════
            DASHBOARD GRID
-           ═══════════════════════════════════════════════ */
         .dash-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -194,9 +187,7 @@
             grid-template-columns: 1fr 1fr 1fr;
         }
 
-        /* ═══════════════════════════════════════════════
            PRANA SCORE GAUGE
-           ═══════════════════════════════════════════════ */
         .gauge-card {
             padding: 36px 28px 28px;
             display: flex;
@@ -292,9 +283,7 @@
             font-family: var(--font-mono);
         }
 
-        /* ═══════════════════════════════════════════════
            SMART TIPS CARD
-           ═══════════════════════════════════════════════ */
         .tips-card {
             padding: 28px;
             display: flex;
@@ -374,9 +363,7 @@
             line-height: 1.6;
         }
 
-        /* ═══════════════════════════════════════════════
            SOIL DETAILS CARD
-           ═══════════════════════════════════════════════ */
         .details-card {
             padding: 28px;
             animation: fadeSlideUp 0.8s 0.4s var(--transition-smooth) both;
@@ -419,9 +406,7 @@
             transition: color 0.6s ease;
         }
 
-        /* ═══════════════════════════════════════════════
            CHART CARD
-           ═══════════════════════════════════════════════ */
         .chart-card {
             padding: 28px;
             display: flex;
@@ -541,9 +526,7 @@
             gap: 10px;
         }
 
-        /* ═══════════════════════════════════════════════
            FOOTER
-           ═══════════════════════════════════════════════ */
         footer {
             position: relative;
             z-index: 1;
@@ -596,11 +579,7 @@
             letter-spacing: 0.3px;
         }
 
-
-
-        /* ═══════════════════════════════════════════════
            RESPONSIVE
-           ═══════════════════════════════════════════════ */
         @media (max-width: 1024px) {
             .dash-grid { grid-template-columns: 1fr; }
             .dash-grid.triple { grid-template-columns: 1fr; }
@@ -655,7 +634,6 @@
     <div class="bg-mesh"></div>
     <div class="bg-grain"></div>
 
-    <!-- ─── HEADER ──────────────────────────────────── -->
     <header id="navbar">
         <a href="index.html" class="brand">
             <div class="brand-icon">
@@ -677,14 +655,12 @@
         </div>
     </header>
 
-    <!-- ─── MAIN CONTENT ────────────────────────────── -->
     <main>
         <div class="page-header">
             <h1>System <span>Dashboard</span></h1>
             <p>Real-time soil intelligence and smart garden insights</p>
         </div>
 
-        <!-- ─── CONTROL PANEL ───────────────────────── -->
         <section class="controls-section">
             <div class="glass-panel controls-grid">
                 <!-- Weather -->
@@ -754,7 +730,6 @@
             </div>
         </section>
 
-        <!-- ─── TOP ROW: Gauge + Tips ───────────────── -->
         <div class="dash-grid">
             <!-- PranaScore Gauge -->
             <div class="glass-panel gauge-card">
@@ -813,7 +788,6 @@
             </div>
         </div>
 
-        <!-- ─── BOTTOM ROW: Details + Charts ────────── -->
         <div class="dash-grid">
             <!-- Soil Details -->
             <div class="glass-panel details-card">
@@ -900,7 +874,6 @@
         </div>
     </main>
 
-    <!-- ─── FOOTER ──────────────────────────────────── -->
     <footer>
         <div class="footer-grid">
             <div class="footer-section">
@@ -930,17 +903,14 @@
 
     <!-- ═══════════════════════════════════════════════
          JAVASCRIPT
-         ═══════════════════════════════════════════════ -->
     <script>
 
-        // ─── State ──────────────────────────────────
         let sensorData = { ec: 1.75, pH: 6.80, temp: 24.5, moist: 38.2, n: 44.0, p: 23.5, k: 148.0 };
         let rainForecast = false;
         let weatherDesc = "Clear skies, no rain expected.";
         let landType = "plain";
         let cropType = "vegetables";
 
-        // ─── Gauge refs ─────────────────────────────
         const gaugeArc = document.getElementById('PranaArc');
         const gaugeIndicator = document.getElementById('PranaIndicator');
         const gaugeNumber = document.getElementById('PranaScoreNumber');
@@ -950,12 +920,10 @@
         gaugeArc.style.strokeDasharray = arcLength;
         gaugeArc.style.strokeDashoffset = arcLength;
 
-        // ─── PranaScore Algorithm v2 (research-backed) ─
         // Crop profiles derived from FAO, TNAU, NDSU, and
         // university extension agronomic research data.
         // Each profile defines: ideal value, acceptable min/max,
         // and a tolerance sigma for Gaussian scoring.
-        // ─────────────────────────────────────────────────
         const CROP_PROFILES = {
             vegetables: {
                 label: 'Vegetables',
@@ -1086,7 +1054,6 @@
                 total += scores[key] * weights[key];
             }
 
-            // ── Weather compound penalties ──
             // Rain coming + already high moisture = waterlogging risk
             if (wx.rainComing && d.moist > moistProfile.ideal) {
                 const excessFactor = (d.moist - moistProfile.ideal) / 20;
@@ -1119,7 +1086,6 @@
             return Math.round(Math.min(Math.max(total, 0), 1) * 100);
         }
 
-        // ─── Animated counter ───────────────────────
         let currentDisplayScore = 0;
         let animFrame = null;
 
@@ -1144,7 +1110,6 @@
             animFrame = requestAnimationFrame(step);
         }
 
-        // ─── Update Dashboard ───────────────────────
         function updateDashboard() {
             // Update detail readouts
             document.getElementById('ec').textContent = sensorData.ec.toFixed(2) + " dS/m";
@@ -1222,11 +1187,8 @@
             updateRecommendations(sensorData, rainForecast, landType, cropType);
         }
 
-
-        // ─── Smart Recommendations v2 ──────────────
         // Generates contextual, multi-category advice using crop
         // profiles, weather forecast, land type, and sensor data.
-        // ────────────────────────────────────────────
         function updateRecommendations(m, rain, land, crop) {
             const stack = document.getElementById('ai-rec-stack');
             const p = CROP_PROFILES[crop];
@@ -1238,7 +1200,6 @@
             const cards = [];
             const moistPct = m.moist;
 
-            // ── 💧 WATER / MOISTURE ──
             if (moistPct > 70) {
                 cards.push({
                     icon: '🚨', title: 'Waterlogging Alert',
@@ -1298,7 +1259,6 @@
                 }
             }
 
-            // ── 🌱 NPK FEEDING ──
             const nLow = m.n < p.n.min, nHigh = m.n > p.n.max;
             const pLow = m.p < p.p.min, pHigh = m.p > p.p.max;
             const kLow = m.k < p.k.min, kHigh = m.k > p.k.max;
@@ -1344,7 +1304,6 @@
                 });
             }
 
-            // ── 🧪 SOIL pH ──
             if (m.pH < 4.5) {
                 cards.push({ icon: '🧪', title: 'Soil pH — Critical', cls: 'warning',
                     body: `pH is <strong>${m.pH.toFixed(1)}</strong> — extremely acidic! Aluminum toxicity risk is high. <strong>Apply agricultural lime immediately</strong> (2-4 kg/10m²) and retest in 2 weeks.`
@@ -1370,7 +1329,6 @@
                 });
             }
 
-            // ── 🌡️ TEMPERATURE ──
             if (m.temp < 5) {
                 cards.push({ icon: '🥶', title: 'Frost Warning', cls: 'warning',
                     body: `Soil temperature is <strong>${m.temp.toFixed(1)}°C</strong> — near-freezing! Root activity has stopped. <strong>Use mulch, row covers, or move containers indoors.</strong>`
@@ -1396,7 +1354,6 @@
                 }
             }
 
-            // ── ⚡ EC / SALINITY ──
             if (m.ec > p.ec.max * 1.4) {
                 cards.push({ icon: '⚡', title: 'Salinity — Dangerous', cls: 'warning',
                     body: `EC is <strong>${m.ec.toFixed(2)} dS/m</strong> — well above safe limit for ${p.label} (max ${p.ec.max} dS/m). Plants can't absorb water even when soil is wet. <strong>Flush with clean water.</strong>`
@@ -1411,7 +1368,6 @@
                 });
             }
 
-            // ── ⛈️ WEATHER COMPOUND WARNINGS ──
             if (wx.severity === 2) {
                 let stormTip = `<strong>Storm incoming!</strong> Expect wind damage, soil erosion, and potential flooding.`;
                 if (land === 'hill') stormTip += ' On slopes, stake tall plants and watch for topsoil erosion.';
@@ -1429,8 +1385,6 @@
             ).join('');
         }
 
-
-        // ─── Slider Bindings ────────────────────────
         const sliderMap = {
             'ec':    { key: 'ec',    fmt: v => v.toFixed(2) },
             'ph':    { key: 'pH',   fmt: v => v.toFixed(2) },
@@ -1465,7 +1419,6 @@
             updateTrackFill();
         });
 
-        // ─── Dropdown Bindings ──────────────────────
         document.getElementById('input-land').addEventListener('change', (e) => {
             landType = e.target.value;
             updateDashboard();
@@ -1476,7 +1429,6 @@
             updateDashboard();
         });
 
-        // ─── Weather Buttons ────────────────────────
         document.querySelectorAll('.weather-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 document.querySelectorAll('.weather-btn').forEach(b => b.classList.remove('active'));
@@ -1487,14 +1439,12 @@
             });
         });
 
-        // ─── Animate bars on load ───────────────────
         function animateBars() {
             document.querySelectorAll('.bar').forEach(bar => {
                 bar.style.height = bar.getAttribute('data-height');
             });
         }
 
-        // ─── Init ───────────────────────────────────
         updateDashboard();
         setTimeout(animateBars, 400);
     </script>
