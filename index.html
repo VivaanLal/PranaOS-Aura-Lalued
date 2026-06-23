@@ -1,185 +1,1052 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="theme.css?v=2">
     <link rel="shortcut icon" href="ChatGPT Image May 31, 2026, 08_23_54 PM.png" type="image/x-icon">
-    <title>PranaOS - Landing Page</title>
+    <title>PranaOS — Intelligent Urban Ecosystem Monitoring</title>
+    <meta name="description" content="PranaOS transforms urban infrastructure into intelligent ecosystems with real-time IoT soil monitoring, AI-driven analytics, and actionable insights for cities.">
     <style>
-        /* ─── FLUENT ANIMATIONS ─── */
-        @keyframes fadeInUp {
-            0% { opacity: 0; transform: translateY(30px); filter: blur(4px); }
-            100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+        @keyframes heroFadeUp {
+            from { opacity: 0; transform: translateY(50px); filter: blur(8px); }
+            to { opacity: 1; transform: translateY(0); filter: blur(0); }
         }
-        @keyframes popIn {
-            0% { opacity: 0; transform: scale(0.9); }
-            100% { opacity: 1; transform: scale(1); }
+        @keyframes heroFadeDown {
+            from { opacity: 0; transform: translateY(-30px); filter: blur(4px); }
+            to { opacity: 1; transform: translateY(0); filter: blur(0); }
         }
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-12px); }
-            100% { transform: translateY(0px); }
-        }
-        @keyframes pulseGlow {
-            0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.4); }
-            70% { box-shadow: 0 0 0 15px rgba(52, 211, 153, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
-        }
-        @keyframes titleShimmer {
+        @keyframes shimmer {
             0% { background-position: -200% center; }
             100% { background-position: 200% center; }
         }
-
-        /* Initial states */
-        .page-header h1, .page-header p, section.glass-panel, footer.glass-panel {
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-16px); }
+        }
+        @keyframes floatDelayed {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(0.5deg); }
+        }
+        @keyframes pulseRing {
+            0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.5); }
+            70% { box-shadow: 0 0 0 20px rgba(52, 211, 153, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+        }
+        @keyframes orbFloat1 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -20px) scale(1.05); }
+            50% { transform: translate(-10px, -40px) scale(0.95); }
+            75% { transform: translate(-30px, -10px) scale(1.02); }
+        }
+        @keyframes orbFloat2 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(-40px, 20px) scale(1.08); }
+            66% { transform: translate(20px, -30px) scale(0.93); }
+        }
+        @keyframes orbFloat3 {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(25px, 25px); }
+        }
+        @keyframes borderGlow {
+            0%, 100% { border-color: rgba(52, 211, 153, 0.15); }
+            50% { border-color: rgba(52, 211, 153, 0.35); }
+        }
+        @keyframes tickerScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        @keyframes particleDrift {
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(20px); opacity: 0; }
+        }
+        .rv { opacity: 0; transform: translateY(45px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        .rv.vis { opacity: 1; transform: translateY(0); }
+        .rv-s { opacity: 0; transform: scale(0.88); transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+        .rv-s.vis { opacity: 1; transform: scale(1); }
+        .rv-l { opacity: 0; transform: translateX(-50px); transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+        .rv-l.vis { opacity: 1; transform: translateX(0); }
+        .rv-r { opacity: 0; transform: translateX(50px); transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+        .rv-r.vis { opacity: 1; transform: translateX(0); }
+        .particles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--accent-emerald);
+            border-radius: 50%;
             opacity: 0;
-            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: particleDrift linear infinite;
         }
-
-        /* Staggered delays */
-        .page-header h1 { animation-delay: 0.1s; }
-        .page-header p { animation-delay: 0.2s; }
-        section.glass-panel:nth-of-type(1) { animation-delay: 0.3s; }
-        section.glass-panel:nth-of-type(2) { animation-delay: 0.4s; }
-        footer.glass-panel { animation-delay: 0.5s; }
-
-        /* Floating elements */
-        .img-dark, .img-light {
-            animation: float 6s ease-in-out infinite;
+        .hero {
+            position: relative;
+            text-align: center;
+            padding: 120px 6% 80px;
+            overflow: hidden;
+            min-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
-
-        /* Title text gradient shimmer */
-        .page-header h1 span {
+        .hero-orbs {
+            position: absolute; inset: 0;
+            pointer-events: none; z-index: 0; overflow: hidden;
+        }
+        .hero-orbs .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+        }
+        .hero-orbs .o1 {
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, var(--accent-emerald), transparent 70%);
+            top: -150px; left: -120px;
+            opacity: 0.12;
+            animation: orbFloat1 15s ease-in-out infinite;
+        }
+        .hero-orbs .o2 {
+            width: 450px; height: 450px;
+            background: radial-gradient(circle, var(--accent-cyan), transparent 70%);
+            top: 0; right: -100px;
+            opacity: 0.10;
+            animation: orbFloat2 18s ease-in-out infinite;
+        }
+        .hero-orbs .o3 {
+            width: 350px; height: 350px;
+            background: radial-gradient(circle, var(--accent-violet), transparent 70%);
+            bottom: -100px; left: 35%;
+            opacity: 0.08;
+            animation: orbFloat3 12s ease-in-out infinite;
+        }
+        .hero-content { position: relative; z-index: 1; max-width: 820px; }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 10px 22px;
+            background: var(--accent-emerald-dim);
+            border: 1px solid rgba(52, 211, 153, 0.2);
+            border-radius: 100px;
+            font-size: 0.82rem; font-weight: 600;
+            color: var(--accent-emerald);
+            letter-spacing: 0.3px;
+            margin-bottom: 32px;
+            animation: heroFadeDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+            backdrop-filter: blur(10px);
+        }
+        .hero-badge .dot {
+            width: 8px; height: 8px;
+            background: var(--accent-emerald);
+            border-radius: 50%;
+            animation: pulseRing 2.5s infinite;
+        }
+        .hero h1 {
+            font-size: clamp(2.6rem, 6.5vw, 5rem);
+            font-weight: 900;
+            line-height: 1.06;
+            letter-spacing: -0.035em;
+            margin-bottom: 28px;
+            animation: heroFadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+        }
+        .hero h1 .glow {
+            background: linear-gradient(135deg, var(--accent-emerald), var(--accent-cyan), var(--accent-violet), var(--accent-emerald));
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 6s linear infinite;
+        }
+        .hero-sub {
+            font-size: clamp(1.02rem, 2vw, 1.28rem);
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 44px;
+            line-height: 1.7;
+            font-weight: 400;
+            animation: heroFadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.38s both;
+        }
+        .hero-ctas {
+            display: flex; gap: 16px;
+            justify-content: center; flex-wrap: wrap;
+            animation: heroFadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.52s both;
+        }
+        .b-pri {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 17px 40px;
+            background: linear-gradient(135deg, var(--accent-emerald), var(--accent-cyan));
+            border: none; border-radius: var(--radius-sm);
+            color: #fff; font-weight: 700; font-size: 1rem;
+            font-family: var(--font-sans);
+            cursor: pointer; text-decoration: none;
+            box-shadow: 0 4px 30px rgba(52, 211, 153, 0.30);
+            transition: all 0.4s var(--transition-smooth);
+            position: relative; overflow: hidden;
+        }
+        .b-pri::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(135deg, transparent, rgba(255,255,255,0.15), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+        .b-pri:hover::after { transform: translateX(100%); }
+        .b-pri:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 45px rgba(52, 211, 153, 0.45);
+        }
+        .b-sec {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 17px 40px;
+            background: transparent;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary); font-weight: 600; font-size: 1rem;
+            font-family: var(--font-sans);
+            cursor: pointer; text-decoration: none;
+            transition: all 0.4s var(--transition-smooth);
+        }
+        .b-sec:hover {
+            background: var(--bg-glass-hover);
+            border-color: var(--border-glow);
+            transform: translateY(-2px);
+        }
+        .ticker-section {
+            padding: 40px 0;
+            overflow: hidden;
+            border-top: 1px solid var(--border-subtle);
+            border-bottom: 1px solid var(--border-subtle);
+            position: relative;
+        }
+        .ticker-label {
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+        .ticker-track {
+            display: flex;
+            animation: tickerScroll 25s linear infinite;
+            width: max-content;
+        }
+        .ticker-item {
+            flex-shrink: 0;
+            padding: 0 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            opacity: 0.5;
+            white-space: nowrap;
+            letter-spacing: 1px;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            max-width: 960px;
+            margin: 60px auto 0;
+            padding: 0 6%;
+        }
+        .stat {
+            text-align: center;
+            padding: 36px 16px;
+            position: relative;
+        }
+        .stat:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: 0; top: 20%; height: 60%;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, var(--border-subtle), transparent);
+        }
+        .stat-val {
+            font-size: clamp(2rem, 4vw, 2.6rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent-emerald), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+        }
+        .stat-lbl {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+            font-weight: 500;
+        }
+        @media (max-width: 600px) {
+            .stats { grid-template-columns: repeat(2, 1fr); }
+            .stat:nth-child(2)::after { display: none; }
+        }
+        .sec { padding: 120px 6%; }
+        .sec-hdr { text-align: center; margin-bottom: 64px; }
+        .sec-tag {
+            display: inline-block;
+            font-size: 0.76rem; font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            color: var(--accent-emerald);
+            margin-bottom: 16px;
+            position: relative;
+        }
+        .sec-tag::before, .sec-tag::after {
+            content: ''; display: inline-block;
+            width: 24px; height: 1px;
+            background: var(--accent-emerald);
+            vertical-align: middle;
+            opacity: 0.4;
+        }
+        .sec-tag::before { margin-right: 12px; }
+        .sec-tag::after { margin-left: 12px; }
+        .sec-title {
+            font-size: clamp(1.9rem, 4.5vw, 3rem);
+            font-weight: 800;
+            letter-spacing: -0.025em;
+            margin-bottom: 18px;
+            line-height: 1.15;
+        }
+        .sec-desc {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            max-width: 580px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+        .feat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 1120px;
+            margin: 0 auto;
+        }
+        @media (max-width: 900px) { .feat-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 560px) { .feat-grid { grid-template-columns: 1fr; } }
+        .feat {
+            padding: 34px 30px;
+            border-radius: var(--radius-md);
+            background: var(--bg-glass);
+            border: 1px solid var(--border-subtle);
+            backdrop-filter: blur(14px);
+            transition: all 0.45s var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+        .feat::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-emerald), var(--accent-cyan));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s var(--transition-smooth);
+        }
+        .feat:hover::before { transform: scaleX(1); }
+        .feat:hover {
+            border-color: var(--border-glow);
+            transform: translateY(-8px);
+            box-shadow: 0 16px 48px rgba(0,0,0,0.2), 0 0 0 1px var(--border-glow);
+        }
+        .feat-ico {
+            width: 50px; height: 50px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 18px;
+            transition: transform 0.5s var(--transition-bounce);
+        }
+        .feat:hover .feat-ico { transform: scale(1.15) rotate(-5deg); }
+        .feat h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+        .feat p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; }
+        .hiw-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 48px;
+            max-width: 960px;
+            margin: 0 auto;
+            position: relative;
+        }
+        @media (max-width: 700px) { .hiw-grid { grid-template-columns: 1fr; gap: 40px; } }
+        .hiw-grid::before {
+            content: '';
+            position: absolute;
+            top: 32px; left: calc(16.66% + 28px); right: calc(16.66% + 28px);
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-emerald), var(--accent-cyan), var(--accent-violet));
+            opacity: 0.2;
+        }
+        @media (max-width: 700px) { .hiw-grid::before { display: none; } }
+        .hiw {
+            text-align: center;
+            position: relative;
+        }
+        .hiw-num {
+            width: 64px; height: 64px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem; font-weight: 800;
+            margin: 0 auto 22px;
+            background: linear-gradient(135deg, var(--accent-emerald), var(--accent-cyan));
+            color: #fff;
+            box-shadow: 0 6px 25px rgba(52, 211, 153, 0.3);
+            transition: transform 0.5s var(--transition-bounce), box-shadow 0.5s ease;
+            position: relative; z-index: 1;
+        }
+        .hiw:hover .hiw-num {
+            transform: scale(1.2) rotate(-5deg);
+            box-shadow: 0 8px 40px rgba(52, 211, 153, 0.5);
+        }
+        .hiw h3 { font-size: 1.08rem; font-weight: 700; margin-bottom: 8px; }
+        .hiw p { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; }
+        .hero-logo {
+            width: clamp(200px, 30vw, 320px);
+            margin: 0 auto 40px;
+            animation: heroFadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
+            filter: drop-shadow(0 8px 30px rgba(52, 211, 153, 0.15));
+            transition: transform 0.6s var(--transition-smooth), filter 0.6s ease;
+        }
+        .hero-logo img {
+            display: block;
+            width: 100%;
+            height: auto;
+            margin: 0 auto;
+        }
+        .hero-logo:hover {
+            transform: scale(1.06) rotate(-2deg);
+            filter: drop-shadow(0 12px 40px rgba(52, 211, 153, 0.25));
+        }
+        .hero-logo .img-light { display: none; }
+        [data-theme="light"] .hero-logo .img-dark { display: none; }
+        [data-theme="light"] .hero-logo .img-light { display: block; }
+        .price-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            max-width: 960px;
+            margin: 0 auto;
+            align-items: start;
+        }
+        @media (max-width: 800px) { .price-grid { grid-template-columns: 1fr; max-width: 400px; } }
+        .price-card {
+            padding: 40px 30px;
+            border-radius: var(--radius-md);
+            background: var(--bg-glass);
+            border: 1px solid var(--border-subtle);
+            backdrop-filter: blur(14px);
+            text-align: center;
+            transition: all 0.45s var(--transition-smooth);
+            position: relative;
+        }
+        .price-card.pop {
+            border-color: var(--accent-emerald);
+            box-shadow: 0 0 50px rgba(52, 211, 153, 0.1);
+            transform: scale(1.04);
+        }
+        .price-card.pop::before {
+            content: 'MOST POPULAR';
+            position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--accent-emerald), var(--accent-cyan));
+            color: #fff; font-size: 0.68rem; font-weight: 800;
+            padding: 5px 18px; border-radius: 100px;
+            letter-spacing: 1px;
+        }
+        .price-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+        .price-card.pop:hover { transform: scale(1.04) translateY(-8px); }
+        .pc-tier {
+            font-size: 0.78rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1.5px;
+            margin-bottom: 14px;
+        }
+        .pc-price { font-size: 2.8rem; font-weight: 900; margin-bottom: 4px; }
+        .pc-period { font-size: 0.83rem; color: var(--text-muted); margin-bottom: 28px; }
+        .pc-features {
+            list-style: none; text-align: left;
+            display: flex; flex-direction: column; gap: 13px;
+            margin-bottom: 30px;
+        }
+        .pc-features li {
+            display: flex; align-items: center; gap: 10px;
+            color: var(--text-secondary); font-size: 0.9rem;
+        }
+        .pc-features .ck { color: var(--accent-emerald); font-weight: 700; flex-shrink: 0; }
+        .testi-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            max-width: 1060px;
+            margin: 0 auto;
+        }
+        @media (max-width: 800px) { .testi-grid { grid-template-columns: 1fr; } }
+        .testi {
+            padding: 34px;
+            border-radius: var(--radius-md);
+            background: var(--bg-glass);
+            border: 1px solid var(--border-subtle);
+            backdrop-filter: blur(14px);
+            transition: all 0.45s var(--transition-smooth);
+        }
+        .testi:hover {
+            border-color: var(--border-glow);
+            transform: translateY(-6px);
+            box-shadow: 0 16px 48px rgba(0,0,0,0.15);
+        }
+        .testi-stars { color: #fbbf24; font-size: 0.9rem; margin-bottom: 16px; letter-spacing: 3px; }
+        .testi-quote {
+            color: var(--text-secondary);
+            font-size: 0.94rem; line-height: 1.7;
+            margin-bottom: 22px;
+            position: relative;
+            padding-left: 18px;
+            border-left: 2px solid var(--accent-emerald-dim);
+        }
+        .testi-who { display: flex; align-items: center; gap: 12px; }
+        .testi-av {
+            width: 42px; height: 42px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.85rem; color: #fff;
+            flex-shrink: 0;
+        }
+        .testi-name { font-weight: 700; font-size: 0.9rem; }
+        .testi-role { font-size: 0.76rem; color: var(--text-muted); }
+        .cta-sec { padding: 80px 6% 120px; text-align: center; }
+        .cta-card {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 64px 48px;
+            border-radius: var(--radius-lg);
+            background: var(--bg-glass);
+            border: 1px solid rgba(52,211,153,0.12);
+            backdrop-filter: blur(16px);
+            position: relative; overflow: hidden;
+        }
+        .cta-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-emerald), var(--accent-cyan), var(--accent-violet));
             background-size: 200% auto;
-            animation: titleShimmer 4s linear infinite;
+            animation: gradientFlow 4s ease infinite;
         }
-
-        /* Form input focus animation */
-        #landing-email {
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        .cta-card::after {
+            content: '';
+            position: absolute; bottom: -100px; right: -100px;
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, var(--accent-emerald), transparent 70%);
+            opacity: 0.05; pointer-events: none;
         }
-        #landing-email:focus {
-            transform: scale(1.02);
-            border-color: var(--accent-emerald) !important;
-            box-shadow: 0 0 20px var(--accent-emerald-dim);
+        .cta-card h2 {
+            font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+            font-weight: 800; margin-bottom: 16px;
         }
-
-        /* Button hover animations */
-        #landing-submit-btn {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        .cta-card > p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            max-width: 480px; margin: 0 auto 36px;
+            line-height: 1.65;
         }
-        #landing-submit-btn:hover {
-            transform: translateY(-2px);
-            animation: pulseGlow 1.5s infinite;
+        .auth-form { max-width: 440px; margin: 0 auto; }
+        .auth-row { display: flex; gap: 10px; margin-bottom: 12px; }
+        .auth-form input[type="email"] {
+            flex: 1; padding: 15px 18px;
+            background: var(--bg-deep);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-size: 0.95rem; font-family: var(--font-sans);
+            outline: none; transition: all 0.35s ease;
         }
-
-        #landing-google-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        .auth-form input[type="email"]:focus {
+            border-color: var(--accent-emerald);
+            box-shadow: 0 0 25px var(--accent-emerald-dim);
+            transform: scale(1.01);
+        }
+        .auth-sep {
+            display: flex; align-items: center; gap: 14px;
+            margin: 18px 0;
+        }
+        .auth-sep .line { flex: 1; height: 1px; background: var(--border-subtle); }
+        .auth-sep span { color: var(--text-muted); font-size: 0.82rem; }
+        #landing-error {
+            color: var(--danger); font-size: 0.86rem;
+            margin-bottom: 8px; display: none; text-align: left;
+        }
+        .ft {
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            padding: 64px 6% 28px;
+        }
+        .ft-grid {
+            display: grid;
+            grid-template-columns: 2.2fr repeat(3, 1fr);
+            gap: 48px;
+            margin-bottom: 48px;
+        }
+        @media (max-width: 768px) {
+            .ft-grid { grid-template-columns: 1fr 1fr; }
+            .auth-row { flex-direction: column; }
+        }
+        @media (max-width: 480px) { .ft-grid { grid-template-columns: 1fr; } }
+        .ft-about { max-width: 320px; }
+        .ft-about .ft-logo {
+            display: flex; align-items: center; gap: 10px;
+            margin-bottom: 14px;
+        }
+        .ft-about .ft-logo-ico {
+            width: 32px; height: 32px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--accent-emerald), var(--accent-cyan));
+            display: flex; align-items: center; justify-content: center;
+        }
+        .ft-about .ft-logo-ico svg {
+            width: 18px; height: 18px;
+            fill: none; stroke: white; stroke-width: 2.5; stroke-linecap: round;
+        }
+        .ft-about .ft-logo span { font-weight: 800; font-size: 1.15rem; }
+        .ft-about p { color: var(--text-secondary); font-size: 0.88rem; line-height: 1.65; }
+        .ft-col h4 {
+            font-size: 0.78rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1.5px;
+            color: var(--text-muted); margin-bottom: 18px;
+        }
+        .ft-col ul { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+        .ft-col a {
+            color: var(--text-secondary); font-size: 0.88rem;
+            text-decoration: none; transition: color 0.3s ease, transform 0.3s ease;
+            display: inline-block;
+        }
+        .ft-col a:hover { color: var(--accent-emerald); transform: translateX(4px); }
+        .ft-bottom {
+            text-align: center; color: var(--text-muted); font-size: 0.8rem;
+            padding-top: 24px; border-top: 1px solid var(--border-subtle);
         }
     </style>
 </head>
-
 <body>
     <div class="bg-mesh"></div>
     <div class="bg-grain"></div>
+    <div class="particles" id="particles"></div>
     <header id="navbar">
         <div class="brand">
             <a href="index.html" class="brand" style="text-decoration: none;">
                 <div class="brand-icon">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                    </svg>
+                    <img src="dark.png" alt="PranaOS" class="nav-logo-dark" style="width: 100%; height: 100%; object-fit: contain;">
+                    <img src="light.png" alt="PranaOS" class="nav-logo-light" style="width: 100%; height: 100%; object-fit: contain;">
                 </div>
                 <div class="brand-name">PranaOS</div>
             </a>
         </div>
-
         <ul class="nav-links" id="nav-menu">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#pricing">Pricing</a></li>
             <li><a href="dash.html">Dashboard</a></li>
             <li><a href="support.html">Support</a></li>
-            <li><a href="myacc.html">My Account</a></li>
             <li><a href="login.html" class="auth-link">Login</a></li>
         </ul>
-
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">🌙</button>
-
         <div class="hamburger" id="hamburger-btn">
-            <span></span>
-            <span></span>
-            <span></span>
+            <span></span><span></span><span></span>
         </div>
     </header>
-    <main>
-        <div class="page-header" style="text-align: center; margin-top: 40px;">
-            <h1>Welcome to <span>PranaOS</span></h1>
-            <p>Intelligent urban ecosystems for a greener tomorrow.</p>
+    <section class="hero">
+        <div class="hero-orbs">
+            <div class="orb o1"></div>
+            <div class="orb o2"></div>
+            <div class="orb o3"></div>
         </div>
-
-        <section class="glass-panel" style="max-width: 480px; margin: 0 auto 60px; padding: 40px; text-align: center; border-top: 4px solid var(--accent-emerald);">
-            <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 12px;">Get Started</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 30px;">Enter your email to log in or create a new account.</p>
-            
-            <form id="landing-auth-form" style="text-align: left; margin-bottom: 20px;">
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-secondary);">Email Address</label>
-                    <input type="email" id="landing-email" required placeholder="you@example.com" style="width: 100%; padding: 12px 16px; background: var(--bg-deep); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); color: var(--text-primary); outline: none;">
+        <div class="hero-content">
+            <div class="hero-logo">
+                <img src="dark.png" alt="PranaOS" class="img-dark">
+                <img src="light.png" alt="PranaOS" class="img-light">
+            </div>
+            <div class="hero-badge">
+                <span class="dot"></span>
+                Now Monitoring 50+ Urban Sites Across India
+            </div>
+            <h1>
+                The Operating System<br>for <span class="glow">Urban Ecosystems</span>
+            </h1>
+            <p class="hero-sub">
+                IoT soil sensors, porous concrete infrastructure, and AI-powered analytics — helping cities protect trees, prevent flooding, and cut maintenance costs by up to 40%.
+            </p>
+            <div class="hero-ctas">
+                <a href="#get-started" class="b-pri">
+                    Get Started Free
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+                <a href="dash.html" class="b-sec">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    See Dashboard
+                </a>
+            </div>
+        </div>
+    </section>
+    <div class="ticker-section">
+        <div class="ticker-label">Trusted by forward-thinking organizations</div>
+        <div class="ticker-track" id="ticker">
+            <span class="ticker-item">Delhi Municipal Corp.</span>
+            <span class="ticker-item">Pune Smart City</span>
+            <span class="ticker-item">Bangalore Urban Dev.</span>
+            <span class="ticker-item">Mumbai Green Initiative</span>
+            <span class="ticker-item">Hyderabad Metro</span>
+            <span class="ticker-item">Chennai Corp.</span>
+            <span class="ticker-item">Jaipur Smart Infra</span>
+            <span class="ticker-item">Kolkata Urban</span>
+            <span class="ticker-item">Delhi Municipal Corp.</span>
+            <span class="ticker-item">Pune Smart City</span>
+            <span class="ticker-item">Bangalore Urban Dev.</span>
+            <span class="ticker-item">Mumbai Green Initiative</span>
+            <span class="ticker-item">Hyderabad Metro</span>
+            <span class="ticker-item">Chennai Corp.</span>
+            <span class="ticker-item">Jaipur Smart Infra</span>
+            <span class="ticker-item">Kolkata Urban</span>
+        </div>
+    </div>
+    <div class="stats rv" style="transition-delay: 0.1s;">
+        <div class="stat">
+            <div class="stat-val" data-target="1450" data-suffix="+">0+</div>
+            <div class="stat-lbl">Projected Sites Covered</div>
+        </div>
+        <div class="stat">
+            <div class="stat-val" data-target="2.8" data-suffix="M+">0</div>
+            <div class="stat-lbl">Data Points Handled</div>
+        </div>
+        <div class="stat">
+            <div class="stat-val" data-target="40" data-suffix="%">0%</div>
+            <div class="stat-lbl">Cost Reduction</div>
+        </div>
+        <div class="stat">
+            <div class="stat-val" data-target="99.9" data-suffix="%">0%</div>
+            <div class="stat-lbl">Uptime SLA</div>
+        </div>
+    </div>
+    <section id="features" class="sec">
+        <div class="sec-hdr rv">
+            <div class="sec-tag">Features</div>
+            <h2 class="sec-title">Everything You Need to<br>Monitor Urban Soil Health</h2>
+            <p class="sec-desc">From real-time sensor data to AI-powered recommendations — complete visibility and control over your urban ecosystem.</p>
+        </div>
+        <div class="feat-grid">
+            <div class="feat rv" style="transition-delay: 0.04s;">
+                <div class="feat-ico" style="background: var(--accent-emerald-dim);">🌱</div>
+                <h3>Real-Time Soil Monitoring</h3>
+                <p>Track moisture, temperature, pH, nitrogen, phosphorus, and potassium with sub-second precision across all nodes.</p>
+            </div>
+            <div class="feat rv" style="transition-delay: 0.1s;">
+                <div class="feat-ico" style="background: var(--accent-cyan-dim);">🤖</div>
+                <h3>AI-Powered Insights</h3>
+                <p>Machine learning models predict risks like waterlogging and nutrient depletion, delivering actionable recommendations.</p>
+            </div>
+            <div class="feat rv" style="transition-delay: 0.16s;">
+                <div class="feat-ico" style="background: var(--accent-violet-dim);">📊</div>
+                <h3>PranaScore™ Analytics</h3>
+                <p>One composite health score that turns complex multi-sensor data into a single, actionable decision metric.</p>
+            </div>
+            <div class="feat rv" style="transition-delay: 0.22s;">
+                <div class="feat-ico" style="background: var(--accent-amber-dim);">🔔</div>
+                <h3>Smart Alerts</h3>
+                <p>Instant notifications when values cross thresholds. Custom rules for each crop profile and soil type.</p>
+            </div>
+            <div class="feat rv" style="transition-delay: 0.28s;">
+                <div class="feat-ico" style="background: var(--accent-rose-dim);">🌳</div>
+                <h3>Crop Profile Engine</h3>
+                <p>Switch between Grains, Vegetables, Orchards, and Pasture — each optimizes thresholds for the target ecosystem.</p>
+            </div>
+            <div class="feat rv" style="transition-delay: 0.34s;">
+                <div class="feat-ico" style="background: var(--accent-blue-dim);">☁️</div>
+                <h3>Cloud-First Architecture</h3>
+                <p>Firebase-synced in real-time. Access from anywhere — desktop, tablet, mobile — zero installation needed.</p>
+            </div>
+        </div>
+    </section>
+    <section id="how-it-works" class="sec" style="padding-top: 80px;">
+        <div class="sec-hdr rv">
+            <div class="sec-tag">How It Works</div>
+            <h2 class="sec-title">From Sensors to Insights<br>in Three Steps</h2>
+            <p class="sec-desc">Plug-and-play deployment. Your dashboard goes live the same day.</p>
+        </div>
+        <div class="hiw-grid">
+            <div class="hiw rv" style="transition-delay: 0.06s;">
+                <div class="hiw-num">1</div>
+                <h3>Deploy Sensors</h3>
+                <p>Install IoT nodes into the porous concrete infrastructure. Each measures 6 key soil parameters in real-time.</p>
+            </div>
+            <div class="hiw rv" style="transition-delay: 0.18s;">
+                <div class="hiw-num">2</div>
+                <h3>Connect & Configure</h3>
+                <p>Sensors auto-connect to PranaOS cloud. Choose your crop profile, set alerts, and your dashboard goes live.</p>
+            </div>
+            <div class="hiw rv" style="transition-delay: 0.30s;">
+                <div class="hiw-num">3</div>
+                <h3>Monitor & Optimize</h3>
+                <p>Watch data flow in. Get AI recommendations, track PranaScore™, and save insights for long-term analysis.</p>
+            </div>
+        </div>
+    </section>
+    <section id="pricing" class="sec">
+        <div class="sec-hdr rv">
+            <div class="sec-tag">Pricing</div>
+            <h2 class="sec-title">Simple, Transparent Pricing</h2>
+            <p class="sec-desc">Start free. Scale as you grow. No hidden fees.</p>
+        </div>
+        <div class="price-grid">
+            <div class="price-card rv" style="transition-delay: 0.04s;">
+                <div class="pc-tier" style="color: var(--accent-emerald);">Free</div>
+                <div class="pc-price">₹0</div>
+                <div class="pc-period">Forever free</div>
+                <ul class="pc-features">
+                    <li><span class="ck">✓</span> 1 sensor node</li>
+                    <li><span class="ck">✓</span> Basic dashboard</li>
+                    <li><span class="ck">✓</span> 7-day data retention</li>
+                    <li><span class="ck">✓</span> Community support</li>
+                </ul>
+                <a href="#get-started" class="b-sec" style="width: 100%; justify-content: center; padding: 13px;">Get Started</a>
+            </div>
+            <div class="price-card pop rv" style="transition-delay: 0.12s;">
+                <div class="pc-tier" style="color: var(--accent-cyan);">Pro</div>
+                <div class="pc-price">₹499</div>
+                <div class="pc-period">per month</div>
+                <ul class="pc-features">
+                    <li><span class="ck">✓</span> Up to 10 sensor nodes</li>
+                    <li><span class="ck">✓</span> AI recommendations</li>
+                    <li><span class="ck">✓</span> 90-day data retention</li>
+                    <li><span class="ck">✓</span> Priority email support</li>
+                    <li><span class="ck">✓</span> Custom alert rules</li>
+                </ul>
+                <a href="#get-started" class="b-pri" style="width: 100%; justify-content: center; padding: 13px;">Start Free Trial</a>
+            </div>
+            <div class="price-card rv" style="transition-delay: 0.20s;">
+                <div class="pc-tier" style="color: var(--accent-violet);">Enterprise</div>
+                <div class="pc-price">Custom</div>
+                <div class="pc-period">tailored for you</div>
+                <ul class="pc-features">
+                    <li><span class="ck">✓</span> Unlimited sensor nodes</li>
+                    <li><span class="ck">✓</span> Advanced AI + API access</li>
+                    <li><span class="ck">✓</span> Unlimited retention</li>
+                    <li><span class="ck">✓</span> Dedicated account manager</li>
+                    <li><span class="ck">✓</span> SLA guarantee</li>
+                </ul>
+                <a href="support.html" class="b-sec" style="width: 100%; justify-content: center; padding: 13px;">Contact Sales</a>
+            </div>
+        </div>
+    </section>
+    <section class="sec" style="padding-top: 80px;">
+        <div class="sec-hdr rv">
+            <div class="sec-tag">Testimonials</div>
+            <h2 class="sec-title">Trusted by Urban Planners<br>& Municipalities</h2>
+        </div>
+        <div class="testi-grid">
+            <div class="testi rv" style="transition-delay: 0.04s;">
+                <div class="testi-stars">★★★★★</div>
+                <p class="testi-quote">"PranaOS gave us visibility into soil health we never had before. We've reduced tree mortality by 35% in the first year."</p>
+                <div class="testi-who">
+                    <div class="testi-av" style="background: linear-gradient(135deg, var(--accent-emerald), var(--accent-cyan));">RK</div>
+                    <div>
+                        <div class="testi-name">Rahul Kapoor</div>
+                        <div class="testi-role">Urban Planner, Delhi Municipal Corp.</div>
+                    </div>
                 </div>
-                <div id="landing-error" style="color: var(--danger); font-size: 0.9rem; margin-bottom: 15px; display: none;"></div>
-                <button type="submit" id="landing-submit-btn" style="width: 100%; padding: 14px; background: linear-gradient(135deg, var(--accent-emerald), var(--accent-cyan)); border: none; border-radius: var(--radius-sm); color: #fff; font-weight: 700; font-size: 1rem; cursor: pointer; box-shadow: var(--shadow-glow);">
-                    Continue
+            </div>
+            <div class="testi rv" style="transition-delay: 0.12s;">
+                <div class="testi-stars">★★★★★</div>
+                <p class="testi-quote">"The AI recommendations are shockingly accurate. It predicted waterlogging in Sector 7 two days before it happened."</p>
+                <div class="testi-who">
+                    <div class="testi-av" style="background: linear-gradient(135deg, var(--accent-cyan), var(--accent-violet));">AS</div>
+                    <div>
+                        <div class="testi-name">Ananya Sharma</div>
+                        <div class="testi-role">Dir. of Green Infrastructure, Pune</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testi rv" style="transition-delay: 0.20s;">
+                <div class="testi-stars">★★★★★</div>
+                <p class="testi-quote">"Setup took 30 minutes. The dashboard was live the same day. This is how all civic tech should work."</p>
+                <div class="testi-who">
+                    <div class="testi-av" style="background: linear-gradient(135deg, var(--accent-violet), var(--accent-rose));">MT</div>
+                    <div>
+                        <div class="testi-name">Manish Tiwari</div>
+                        <div class="testi-role">CTO, SmartCity Solutions Pvt. Ltd.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="get-started" class="cta-sec">
+        <div class="cta-card rv-s">
+            <h2>Ready to Transform Your<br><span class="glow" style="background: linear-gradient(135deg, var(--accent-emerald), var(--accent-cyan), var(--accent-violet), var(--accent-emerald)); background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: shimmer 6s linear infinite;">Urban Infrastructure?</span></h2>
+            <p>Start monitoring in minutes. No credit card required.</p>
+            <div class="auth-form">
+                <form id="landing-auth-form">
+                    <div class="auth-row">
+                        <input type="email" id="landing-email" required placeholder="Enter your email">
+                        <button type="submit" id="landing-submit-btn" class="b-pri" style="white-space: nowrap; padding: 15px 30px;">
+                            Get Started
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </button>
+                    </div>
+                    <div id="landing-error"></div>
+                </form>
+                <div class="auth-sep">
+                    <div class="line"></div>
+                    <span>or</span>
+                    <div class="line"></div>
+                </div>
+                <button type="button" id="landing-google-btn" class="b-sec" style="width: 100%; justify-content: center; padding: 14px;">
+                    <svg width="20" height="20" viewBox="0 0 24 24">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                    </svg>
+                    Continue with Google
                 </button>
-            </form>
-
-            <div style="display: flex; align-items: center; margin: 20px 0;">
-                <div style="flex: 1; height: 1px; background: var(--border-subtle);"></div>
-                <span style="padding: 0 15px; color: var(--text-muted); font-size: 0.9rem;">or</span>
-                <div style="flex: 1; height: 1px; background: var(--border-subtle);"></div>
             </div>
-
-            <button type="button" id="landing-google-btn" style="width: 100%; padding: 12px; display: flex; align-items: center; justify-content: center; gap: 10px; background: transparent; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); color: var(--text-primary); font-weight: 600; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='var(--bg-deep)'" onmouseout="this.style.background='transparent'">
-                <svg width="20" height="20" viewBox="0 0 24 24">
-                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-                </svg>
-                Continue with Google
-            </button>
-        </section>
-    </main>
-    <footer class="glass-panel" style="margin-top: 40px; border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 40px 6%;">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 40px;">
-            <div>
-                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 16px; color: var(--accent-emerald);">Our Story</h3>
-                <p style="color: var(--text-secondary); font-size: 0.95rem;">
-                    At PranaOS, we transform urban infrastructure into intelligent ecosystems. By combining porous concrete, IoT sensors and AI-driven analytics, we help cities monitor and protect the hidden health of urban soil and tree roots. Our technology reduces tree loss, prevents flooding, and lowers maintenance costs.
-                </p>
+        </div>
+    </section>
+    <footer class="glass-panel ft">
+        <div class="ft-grid">
+            <div class="ft-about">
+                <div class="ft-logo">
+                    <div class="ft-logo-ico" style="background: none; padding: 0;">
+                        <img src="dark.png" alt="PranaOS" class="nav-logo-dark" style="width: 100%; height: 100%; object-fit: contain;">
+                        <img src="light.png" alt="PranaOS" class="nav-logo-light" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                    <span>PranaOS</span>
+                </div>
+                <p>Transforming urban infrastructure into intelligent ecosystems with IoT sensors, porous concrete, and AI analytics.</p>
             </div>
-            <div>
-                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 16px; color: var(--accent-cyan);">Contact Us</h3>
-                <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 8px;"><strong>Name:</strong> Vivaan Lal</p>
-                <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 8px;"><strong>Email:</strong> vivaanlal21@gmail.com</p>
-                <p style="color: var(--text-secondary); font-size: 0.95rem;"><strong>Phone:</strong> 76768699070</p>
+            <div class="ft-col">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="dash.html">Dashboard</a></li>
+                    <li><a href="tiers.html">All Plans</a></li>
+                </ul>
             </div>
-            <div>
-                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 16px; color: var(--accent-violet);">Sitemap</h3>
-                <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px;">
-                    <li><a href="index.html" style="color: var(--text-secondary);">Landing Page</a></li>
-                    <li><a href="dash.html" style="color: var(--text-secondary);">Dashboard</a></li>
-                    <li><a href="support.html" style="color: var(--text-secondary);">Support</a></li>
-                    <li><a href="myacc.html" style="color: var(--text-secondary);">My Account</a></li>
+            <div class="ft-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="support.html">Support</a></li>
+                    <li><a href="support.html">Contact Us</a></li>
+                    <li><a href="comingsoon.html">Blog</a></li>
+                    <li><a href="comingsoon.html">Careers</a></li>
+                </ul>
+            </div>
+            <div class="ft-col">
+                <h4>Get in Touch</h4>
+                <ul>
+                    <li><a href="mailto:vivaanlal21@gmail.com">vivaanlal21@gmail.com</a></li>
+                    <li><a href="tel:76768699070">+91 76768 69907</a></li>
                 </ul>
             </div>
         </div>
-        <div style="text-align: center; color: var(--text-muted); font-size: 0.85rem; padding-top: 20px; border-top: 1px solid var(--border-subtle);">
-            &copy; Vivaan Lal 2026
+        <div class="ft-bottom">
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px; width: 100%;">
+                <div>&copy; 2026 PranaOS by Vivaan Lal &middot; All rights reserved.</div>
+                <div style="display: flex; gap: 24px;">
+                    <span><strong style="color: var(--accent-emerald);">1,450+</strong> Projected Sites Covered</span>
+                    <span><strong style="color: var(--accent-cyan);">2.8M+</strong> Data Points Handled</span>
+                </div>
+            </div>
         </div>
     </footer>
     <script type="module" src="firebase_config.js"></script>
     <script src="theme.js"></script>
+    <script>
+    (function() {
+        'use strict';
+        const particleContainer = document.getElementById('particles');
+        if (particleContainer) {
+            for (let i = 0; i < 30; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.bottom = '-10px';
+                p.style.animationDuration = (8 + Math.random() * 12) + 's';
+                p.style.animationDelay = Math.random() * 10 + 's';
+                p.style.width = p.style.height = (1 + Math.random() * 2) + 'px';
+                p.style.opacity = 0;
+                const colors = ['var(--accent-emerald)', 'var(--accent-cyan)', 'var(--accent-violet)'];
+                p.style.background = colors[Math.floor(Math.random() * 3)];
+                particleContainer.appendChild(p);
+            }
+        }
+        const revObs = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+        }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+        document.querySelectorAll('.rv, .rv-s, .rv-l, .rv-r').forEach(el => revObs.observe(el));
+        let countersDone = false;
+        function animateCounters() {
+            if (countersDone) return;
+            countersDone = true;
+            document.querySelectorAll('.stat-val[data-target]').forEach(el => {
+                const target = parseFloat(el.dataset.target);
+                const suffix = el.dataset.suffix || '';
+                const isDecimal = target % 1 !== 0;
+                const dur = 2200;
+                const t0 = performance.now();
+                (function tick(now) {
+                    const p = Math.min((now - t0) / dur, 1);
+                    const ease = 1 - Math.pow(1 - p, 3);
+                    const val = ease * target;
+                    el.textContent = (isDecimal ? val.toFixed(1) : Math.floor(val).toLocaleString()) + suffix;
+                    if (p < 1) requestAnimationFrame(tick);
+                })(t0);
+            });
+        }
+        const statObs = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) { animateCounters(); statObs.disconnect(); } });
+        }, { threshold: 0.4 });
+        const statsEl = document.querySelector('.stats');
+        if (statsEl) statObs.observe(statsEl);
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', function(e) {
+                e.preventDefault();
+                const t = document.querySelector(this.getAttribute('href'));
+                if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+        const nav = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 60) {
+                nav.style.background = 'var(--bg-glass)';
+                nav.style.backdropFilter = 'blur(24px)';
+                nav.style.webkitBackdropFilter = 'blur(24px)';
+                nav.style.borderBottom = '1px solid var(--border-subtle)';
+            } else {
+                nav.style.background = 'transparent';
+                nav.style.backdropFilter = 'none';
+                nav.style.webkitBackdropFilter = 'none';
+                nav.style.borderBottom = 'none';
+            }
+        }, { passive: true });
+        document.querySelectorAll('.feat').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                const y = (e.clientY - rect.top) / rect.height - 0.5;
+                card.style.transform = `translateY(-8px) perspective(600px) rotateX(${-y * 6}deg) rotateY(${x * 6}deg)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+        });
+    })();
+    </script>
 </body>
-
 </html>

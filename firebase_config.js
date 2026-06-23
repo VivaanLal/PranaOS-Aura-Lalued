@@ -1,4 +1,4 @@
-// Import the functions you need from the SDKs you need
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import {
     getAuth,
@@ -18,8 +18,7 @@ import {
     verifyBeforeUpdateEmail,
     updatePassword
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-
-// TODO: Replace these with your actual Firebase project configuration
+import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 const firebaseConfig = {
     apiKey: "AIzaSyAtCvA-8TnSjhjhBrlwEJ81prYRYFi6S5k",
     authDomain: "prana-os-lalu.firebaseapp.com",
@@ -29,35 +28,28 @@ const firebaseConfig = {
     appId: "1:173348174799:web:71acb1267e8dde2caab0ba",
     measurementId: "G-1MY29P96BH"
 };
-
-// Initialize Firebase only if the API key has been provided
-let app, auth;
-
+let app, auth, db;
 if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
     app = initializeApp(firebaseConfig);
     auth = getAuth(app);
-
-    // Global Auth State Observer — wait for DOM to be ready
+    db = getFirestore(app);
+    window.db = db;
+    window.auth = auth;
+    window.firebaseCollection = collection;
+    window.firebaseAddDoc = addDoc;
+    window.firebaseServerTimestamp = serverTimestamp;
     document.addEventListener('DOMContentLoaded', () => {
     onAuthStateChanged(auth, (user) => {
         const isAuthPage = window.location.pathname.includes('login.html');
-
         if (user) {
-            // User is signed in
             console.log("User is signed in:", user.email);
-            
-            // Update My Account Page Details if present
             const myaccName = document.getElementById('myacc-name');
             const myaccEmail = document.getElementById('myacc-email');
             const myaccAvatar = document.getElementById('myacc-avatar');
-            
             const displayName = user.displayName || 'PranaOS User';
-            
             if (myaccName) myaccName.textContent = displayName;
             if (myaccEmail) myaccEmail.textContent = user.email;
-            
             if (myaccAvatar) {
-                // Get initials
                 const names = displayName.split(' ');
                 let initials = names[0].charAt(0).toUpperCase();
                 if (names.length > 1) {
@@ -65,8 +57,6 @@ if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
                 }
                 myaccAvatar.textContent = initials;
             }
-            
-            // Update UI across pages: change login links to sign out
             const authLinks = document.querySelectorAll('.auth-link');
             authLinks.forEach(link => {
                 link.textContent = "Sign Out";
@@ -79,8 +69,6 @@ if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
                     });
                 });
             });
-
-            // Wire up the explicit Sign Out button in My Account
             const myaccSignoutBtn = document.getElementById('myacc-signout-btn');
             if (myaccSignoutBtn) {
                 myaccSignoutBtn.addEventListener('click', () => {
@@ -89,9 +77,7 @@ if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
                     });
                 });
             }
-
             const isVerifyPage = window.location.pathname.includes('verify.html');
-
             if (isAuthPage && !window.isSigningIn) {
                 if (user.emailVerified) {
                     window.location.href = "dash.html";
@@ -99,49 +85,35 @@ if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
                     window.location.href = "verify.html";
                 }
             }
-
-            // Route protection for unverified users trying to access dashboard/account
             const restrictedRoutes = ['dash.html', 'myacc.html'];
             const isRestricted = restrictedRoutes.some(route => window.location.pathname.includes(route));
-            
             if (isRestricted && !user.emailVerified) {
                 window.location.href = "verify.html";
             }
-
-            // Auto-redirect from verify page if they are already verified
             if (isVerifyPage && user.emailVerified) {
                 window.location.href = "dash.html";
             }
         } else {
-            // User is signed out
             console.log("User is signed out.");
-            // Ensure auth links say Login
             const authLinks = document.querySelectorAll('.auth-link');
             authLinks.forEach(link => {
                 link.textContent = "Login";
                 link.href = "login.html";
             });
-
             const isVerifyPage = window.location.pathname.includes('verify.html');
-
-            // Protect authenticated routes
             const protectedRoutes = ['dash.html', 'myacc.html', 'verify.html'];
             const isProtected = protectedRoutes.some(route => window.location.pathname.includes(route));
-
             if (isProtected) {
                 window.location.href = "login.html";
             }
         }
     });
-    }); // end DOMContentLoaded
+    }); 
 } else {
     console.warn("Firebase is not initialized. Please add your config keys to firebase_config.js");
 }
-
-// ─── LOGIN PAGE LOGIC ────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
     const isAuthPage = window.location.pathname.includes('login.html');
-
     if (isAuthPage) {
         let isSignUpMode = false;
         const form = document.getElementById('auth-form');
@@ -151,11 +123,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const submitBtn = document.getElementById('auth-submit-btn');
         const toggleLink = document.getElementById('auth-toggle-link');
         const errorDiv = document.getElementById('auth-error');
-
         const urlParams = new URLSearchParams(window.location.search);
         const presetEmail = urlParams.get('email');
         const forcedMode = urlParams.get('mode');
-
         if (presetEmail) {
             const emailInput = document.getElementById('auth-email');
             if (emailInput) {
@@ -164,7 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 emailInput.style.opacity = '0.7';
             }
         }
-
         const setFormMode = (toSignUp) => {
             isSignUpMode = toSignUp;
             errorDiv.style.display = 'none';
@@ -184,41 +153,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 toggleLink.textContent = "Don't have an account? Sign Up";
             }
         };
-
         if (forcedMode === 'signup') {
             setFormMode(true);
-            toggleLink.style.display = 'none'; // Lock to sign up
+            toggleLink.style.display = 'none'; 
             subtitle.textContent = "Looks like you're new here! Let's set up your account.";
         } else if (forcedMode === 'signin') {
             setFormMode(false);
-            toggleLink.style.display = 'none'; // Lock to sign in
+            toggleLink.style.display = 'none'; 
         }
-
-        // Handle Toggle Between Sign In and Sign Up (only if not forced)
         toggleLink.addEventListener('click', (e) => {
             e.preventDefault();
             setFormMode(!isSignUpMode);
         });
-
-        // Handle Form Submission
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-
             if (!auth) {
                 errorDiv.textContent = "Firebase is not configured. Please add your keys in firebase_config.js.";
                 errorDiv.style.display = "block";
                 return;
             }
-
             const email = document.getElementById('auth-email').value;
             const password = document.getElementById('auth-password').value;
             const name = document.getElementById('auth-name').value;
-
             submitBtn.textContent = "Please wait...";
             submitBtn.disabled = true;
             errorDiv.style.display = "none";
             window.isSigningIn = true;
-
             if (isSignUpMode) {
                 if (!name || name.trim() === "") {
                     errorDiv.textContent = "Please enter your full name.";
@@ -228,18 +188,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.isSigningIn = false;
                     return;
                 }
-
                 createUserWithEmailAndPassword(auth, email, password)
                     .then(async (userCredential) => {
-                        // Update the profile with the name
                         await updateProfile(userCredential.user, {
                             displayName: name
                         });
-                        // Send verification email
                         await sendEmailVerification(userCredential.user);
-                        // Reload the user to ensure the new displayName is picked up globally
                         await userCredential.user.reload();
-                        // Force update of the profile in local persistence to fix the name bug
                         await auth.updateCurrentUser(auth.currentUser);
                     })
                     .then(() => {
@@ -270,7 +225,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
             }
         });
-        // Handle Google Sign In
         const googleBtn = document.getElementById('auth-google-btn');
         if (googleBtn) {
             googleBtn.addEventListener('click', () => {
@@ -288,8 +242,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
             });
         }
-
-        // Handle Password Reset
         const forgotPwLink = document.getElementById('auth-forgot-pw');
         if (forgotPwLink) {
             forgotPwLink.addEventListener('click', (e) => {
@@ -316,32 +268,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
-
-// ─── EDIT PROFILE LOGIC (MYACC.HTML) ────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
     const isMyaccPage = window.location.pathname.includes('myacc.html');
     if (!isMyaccPage) return;
-
     const editBtn = document.getElementById('myacc-edit-btn');
     const modal = document.getElementById('myacc-edit-modal');
     const closeBtn = document.getElementById('edit-close-modal-btn');
     const editError = document.getElementById('edit-error');
     const editSuccess = document.getElementById('edit-success');
-
-    // Name Update Elements
     const editNameInput = document.getElementById('edit-name');
     const saveNameBtn = document.getElementById('edit-save-name-btn');
-
-    // Email Update Elements
     const editEmailInput = document.getElementById('edit-email');
     const editEmailPwInput = document.getElementById('edit-email-pw');
     const saveEmailBtn = document.getElementById('edit-save-email-btn');
-
-    // Password Update Elements
     const editPwCurrent = document.getElementById('edit-pw-current');
     const editPwNew = document.getElementById('edit-pw-new');
     const savePwBtn = document.getElementById('edit-save-pw-btn');
-
     const showMsg = (element, msg, isError) => {
         editError.style.display = 'none';
         editSuccess.style.display = 'none';
@@ -350,7 +292,6 @@ document.addEventListener('DOMContentLoaded', () => {
             element.style.display = 'block';
         }
     };
-
     if (editBtn && modal) {
         editBtn.addEventListener('click', () => {
             if (auth && auth.currentUser) {
@@ -359,29 +300,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 editEmailPwInput.value = '';
                 editPwCurrent.value = '';
                 editPwNew.value = '';
-                showMsg(null, null); // Clear messages
+                showMsg(null, null); 
                 modal.style.display = 'flex';
             }
         });
-
         closeBtn.addEventListener('click', () => {
             modal.style.display = 'none';
         });
-
-        // 1. Update Name
         saveNameBtn.addEventListener('click', async () => {
             if (!auth || !auth.currentUser) return;
             const newName = editNameInput.value.trim();
             if (!newName) return showMsg(editError, "Name cannot be empty.", true);
-
             saveNameBtn.textContent = "Updating...";
             saveNameBtn.disabled = true;
-
             try {
                 await updateProfile(auth.currentUser, { displayName: newName });
                 await auth.currentUser.reload();
-                
-                // Update UI instantly
                 const myaccName = document.getElementById('myacc-name');
                 const myaccAvatar = document.getElementById('myacc-avatar');
                 if (myaccName) myaccName.textContent = newName;
@@ -391,7 +325,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (names.length > 1) initials += names[names.length - 1].charAt(0).toUpperCase();
                     myaccAvatar.textContent = initials;
                 }
-                
                 showMsg(editSuccess, "Name updated successfully!", false);
             } catch (error) {
                 showMsg(editError, error.message, true);
@@ -400,26 +333,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 saveNameBtn.disabled = false;
             }
         });
-
-        // 2. Update Email
         saveEmailBtn.addEventListener('click', async () => {
             if (!auth || !auth.currentUser) return;
             const newEmail = editEmailInput.value.trim();
             const password = editEmailPwInput.value;
-            
             if (!newEmail || !password) return showMsg(editError, "Both email and current password are required.", true);
-
             saveEmailBtn.textContent = "Updating...";
             saveEmailBtn.disabled = true;
-
             try {
-                // Re-authenticate first
                 const credential = EmailAuthProvider.credential(auth.currentUser.email, password);
                 await reauthenticateWithCredential(auth.currentUser, credential);
-                
-                // Call verification
                 await verifyBeforeUpdateEmail(auth.currentUser, newEmail);
-                
                 showMsg(editSuccess, "A verification link has been sent to your NEW email. Please click it to complete the change.", false);
                 editEmailInput.value = '';
                 editEmailPwInput.value = '';
@@ -434,27 +358,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 saveEmailBtn.disabled = false;
             }
         });
-
-        // 3. Update Password
         savePwBtn.addEventListener('click', async () => {
             if (!auth || !auth.currentUser) return;
             const currentPw = editPwCurrent.value;
             const newPw = editPwNew.value;
-            
             if (!currentPw || !newPw) return showMsg(editError, "Both current and new passwords are required.", true);
             if (newPw.length < 6) return showMsg(editError, "New password must be at least 6 characters.", true);
-
             savePwBtn.textContent = "Updating...";
             savePwBtn.disabled = true;
-
             try {
-                // Re-authenticate first
                 const credential = EmailAuthProvider.credential(auth.currentUser.email, currentPw);
                 await reauthenticateWithCredential(auth.currentUser, credential);
-                
-                // Update password
                 await updatePassword(auth.currentUser, newPw);
-                
                 showMsg(editSuccess, "Password updated successfully!", false);
                 editPwCurrent.value = '';
                 editPwNew.value = '';
@@ -471,25 +386,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
-// ─── VERIFY EMAIL LOGIC (VERIFY.HTML) ───────────────────────
 document.addEventListener('DOMContentLoaded', () => {
     const isVerifyPage = window.location.pathname.includes('verify.html');
     if (!isVerifyPage) return;
-
     const checkBtn = document.getElementById('verify-check-btn');
     const signOutBtn = document.getElementById('verify-signout-btn');
     const resendBtn = document.getElementById('verify-resend-btn');
     const verifyError = document.getElementById('verify-error');
-
     if (resendBtn) {
         resendBtn.addEventListener('click', async () => {
             if (!auth || !auth.currentUser) return;
-            
             resendBtn.textContent = "Sending...";
             resendBtn.disabled = true;
             if (verifyError) verifyError.style.display = 'none';
-
             try {
                 await sendEmailVerification(auth.currentUser);
                 if (verifyError) {
@@ -509,7 +418,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
     if (signOutBtn) {
         signOutBtn.addEventListener('click', () => {
             signOut(auth).then(() => {
@@ -517,21 +425,17 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
-
     if (checkBtn) {
         checkBtn.addEventListener('click', async () => {
             if (!auth || !auth.currentUser) {
                 window.location.href = "login.html";
                 return;
             }
-
             checkBtn.textContent = "Checking...";
             checkBtn.disabled = true;
             if (verifyError) verifyError.style.display = 'none';
-
             try {
                 await auth.currentUser.reload();
-                
                 if (auth.currentUser.emailVerified) {
                     window.location.href = "dash.html";
                 } else {
@@ -551,40 +455,31 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
-    // --- Change Email Logic ---
     const emailDisplay = document.getElementById('verify-email-display');
     const changeEmailBtn = document.getElementById('verify-change-email-btn');
     const changeEmailForm = document.getElementById('verify-change-email-form');
     const cancelChangeBtn = document.getElementById('verify-cancel-change-btn');
     const saveEmailBtn = document.getElementById('verify-save-email-btn');
     const newEmailInput = document.getElementById('verify-new-email');
-
-    // Update display on load if auth is ready
     auth.onAuthStateChanged((user) => {
         if (user && emailDisplay) {
             emailDisplay.textContent = user.email;
         }
     });
-
     if (changeEmailBtn && changeEmailForm) {
         changeEmailBtn.addEventListener('click', () => {
             changeEmailForm.style.display = 'block';
             if (verifyError) verifyError.style.display = 'none';
         });
-
         cancelChangeBtn.addEventListener('click', () => {
             changeEmailForm.style.display = 'none';
         });
-
         saveEmailBtn.addEventListener('click', async () => {
             const newEmail = newEmailInput.value.trim();
             if (!newEmail) return;
-
             saveEmailBtn.textContent = "Updating...";
             saveEmailBtn.disabled = true;
             if (verifyError) verifyError.style.display = 'none';
-
             try {
                 await updateEmail(auth.currentUser, newEmail);
                 await sendEmailVerification(auth.currentUser);
@@ -608,35 +503,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
-// ─── LANDING PAGE LOGIC (INDEX.HTML) ────────────────────
 document.addEventListener('DOMContentLoaded', () => {
     const isIndexPage = window.location.pathname.endsWith('/') || window.location.pathname.endsWith('index.html');
     if (!isIndexPage) return;
-
     const landingForm = document.getElementById('landing-auth-form');
     const landingEmail = document.getElementById('landing-email');
     const landingSubmitBtn = document.getElementById('landing-submit-btn');
     const landingError = document.getElementById('landing-error');
     const landingGoogleBtn = document.getElementById('landing-google-btn');
-
     if (landingForm) {
         landingForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = landingEmail.value.trim();
             if (!email) return;
-
             landingSubmitBtn.textContent = "Checking...";
             landingSubmitBtn.disabled = true;
             if (landingError) landingError.style.display = 'none';
-
             try {
                 const methods = await fetchSignInMethodsForEmail(auth, email);
                 if (methods && methods.length > 0) {
-                    // Email exists, redirect to login mode
                     window.location.href = `login.html?email=${encodeURIComponent(email)}&mode=signin`;
                 } else {
-                    // Email does not exist, redirect to signup mode
                     window.location.href = `login.html?email=${encodeURIComponent(email)}&mode=signup`;
                 }
             } catch (error) {
@@ -650,7 +537,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
     if (landingGoogleBtn) {
         landingGoogleBtn.addEventListener('click', () => {
             if (!auth) return;

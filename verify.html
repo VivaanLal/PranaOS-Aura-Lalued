@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="theme.css?v=2">
     <link rel="shortcut icon" href="ChatGPT Image May 31, 2026, 08_23_54 PM.png" type="image/x-icon">
     <title>PranaOS - Verify Email</title>
 </head>
 <body>
     <div class="bg-mesh"></div>
     <div class="bg-grain"></div>
+    <div class="particles" id="particles"></div>
     <header id="navbar">
         <div class="brand">
             <a href="index.html" class="brand" style="text-decoration: none;">
                 <div class="brand-icon">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                    </svg>
+                    <img src="dark.png" alt="PranaOS" class="nav-logo-dark" style="width: 100%; height: 100%; object-fit: contain;">
+                    <img src="light.png" alt="PranaOS" class="nav-logo-light" style="width: 100%; height: 100%; object-fit: contain;">
                 </div>
                 <div class="brand-name">PranaOS</div>
             </a>
@@ -35,20 +35,18 @@
         </div>
     </header>
     <main style="display: flex; justify-content: center; align-items: center; min-height: 50vh;">
-        <div class="glass-panel" style="padding: 60px; text-align: center; max-width: 600px; border-top: 4px solid var(--accent-emerald);">
+        <div class="liquid-glass" style="padding: 60px; text-align: center; max-width: 600px; border-top: 4px solid var(--accent-emerald);">
             <div style="font-size: 3rem; margin-bottom: 20px;">✉️</div>
             <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 16px;">Verify Your Email</h2>
             <p style="color: var(--text-secondary); font-size: 1.1rem; line-height: 1.6; margin-bottom: 30px;">
                 We've sent a verification link to <strong id="verify-email-display" style="color: var(--accent-emerald);">your email address</strong>. Please check your inbox and <strong>spam/junk folder</strong> to verify your account.
             </p>
-
             <button id="verify-check-btn" type="button" style="width: 100%; padding: 14px; background: linear-gradient(135deg, var(--accent-emerald), var(--accent-cyan)); border: none; border-radius: var(--radius-sm); color: #fff; font-weight: 700; font-size: 1rem; cursor: pointer; box-shadow: var(--shadow-glow);">
                 I have verified my email
             </button>
             <button id="verify-resend-btn" type="button" style="width: 100%; margin-top: 15px; padding: 14px; background: transparent; border: 1px solid var(--accent-cyan); border-radius: var(--radius-sm); color: var(--accent-cyan); font-weight: 700; font-size: 1rem; cursor: pointer;">
                 Resend Verification Email
             </button>
-            
             <div style="display: flex; gap: 15px; margin-top: 15px;">
                 <button id="verify-change-email-btn" type="button" style="flex: 1; padding: 14px; background: transparent; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); color: var(--text-secondary); font-weight: 600; font-size: 0.95rem; cursor: pointer;">
                     Change Email
@@ -57,8 +55,6 @@
                     Sign Out
                 </button>
             </div>
-
-            <!-- Change Email Form (Hidden by default) -->
             <div id="verify-change-email-form" style="display: none; margin-top: 20px; text-align: left; background: var(--bg-deep); padding: 20px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
                 <label style="display: block; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-secondary);">New Email Address</label>
                 <input type="email" id="verify-new-email" placeholder="new@example.com" style="width: 100%; padding: 12px 16px; margin-bottom: 15px; background: transparent; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); color: var(--text-primary); outline: none;">
@@ -67,11 +63,10 @@
                     <button id="verify-save-email-btn" type="button" style="flex: 1; padding: 10px; background: linear-gradient(135deg, var(--accent-emerald), var(--accent-cyan)); border: none; border-radius: var(--radius-sm); color: #fff; font-weight: 600; cursor: pointer;">Update Email</button>
                 </div>
             </div>
-
             <div id="verify-error" style="color: var(--danger); font-size: 0.9rem; margin-top: 15px; display: none;"></div>
         </div>
     </main>
-    <footer class="glass-panel" style="margin-top: auto; border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 40px 6%;">
+    <footer class="liquid-glass" style="margin-top: auto; border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 40px 6%;">
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 40px;">
             <div>
                 <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 16px; color: var(--accent-emerald);">Our Story</h3>

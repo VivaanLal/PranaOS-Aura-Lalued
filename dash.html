@@ -9,34 +9,29 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="ChatGPT Image May 31, 2026, 08_23_54 PM.png" type="image/x-icon">
-    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="theme.css?v=2">
     <style>
-
-        /* ═══════════════════════════════════════════════
-           CONTROL PANEL
-           ═══════════════════════════════════════════════ */
+        .nav-logo-light { display: none !important; }
+        [data-theme="light"] .nav-logo-dark { display: none !important; }
+        [data-theme="light"] .nav-logo-light { display: block !important; }
         .controls-section {
             margin-bottom: 36px;
             animation: fadeSlideUp 0.8s 0.1s var(--transition-smooth) both;
         }
-
         .controls-grid {
             padding: 28px;
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
             gap: 20px;
         }
-
         .control-group {
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
-
         .control-group.span-2 {
             grid-column: span 2;
         }
-
         .control-label {
             font-size: 0.82rem;
             font-weight: 600;
@@ -47,15 +42,12 @@
             align-items: center;
             justify-content: space-between;
         }
-
         .control-value {
             font-family: var(--font-mono);
             font-weight: 600;
             color: var(--accent-emerald);
             font-size: 0.85rem;
         }
-
-        /* Custom range slider */
         input[type="range"] {
             -webkit-appearance: none;
             appearance: none;
@@ -66,20 +58,17 @@
             outline: none;
             cursor: pointer;
         }
-
         input[type="range"]::-webkit-slider-runnable-track {
             height: 6px;
             border-radius: 3px;
             background: transparent;
         }
-
         input[type="range"]::-moz-range-track {
             height: 6px;
             border-radius: 3px;
             background: transparent;
             border: none;
         }
-
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
@@ -92,17 +81,14 @@
             margin-top: -7px;
             transition: transform 0.2s var(--transition-bounce), box-shadow 0.2s ease;
         }
-
         input[type="range"]::-webkit-slider-thumb:hover {
             transform: scale(1.3);
             box-shadow: 0 0 24px rgba(52, 211, 153, 0.7), 0 2px 8px rgba(0,0,0,0.4);
         }
-
         input[type="range"]::-webkit-slider-thumb:active {
             transform: scale(1.15);
             box-shadow: 0 0 30px rgba(52, 211, 153, 0.8), 0 2px 10px rgba(0,0,0,0.5);
         }
-
         input[type="range"]::-moz-range-thumb {
             width: 20px;
             height: 20px;
@@ -112,14 +98,11 @@
             cursor: pointer;
             border: none;
         }
-
         input[type="range"]::-moz-range-progress {
             height: 6px;
             border-radius: 3px;
             background: linear-gradient(90deg, var(--accent-emerald), var(--accent-cyan));
         }
-
-        /* Custom select */
         .custom-select {
             padding: 10px 14px;
             border-radius: var(--radius-sm);
@@ -133,24 +116,19 @@
             outline: none;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
-
         .custom-select:focus {
             border-color: var(--accent-emerald);
             box-shadow: 0 0 0 3px var(--accent-emerald-dim);
         }
-
         .custom-select option {
             background: var(--bg-deep);
             color: var(--text-primary);
         }
-
-        /* Weather buttons */
         .weather-group {
             display: flex;
             gap: 6px;
             flex-wrap: wrap;
         }
-
         .weather-btn {
             flex: 1;
             min-width: 70px;
@@ -166,37 +144,26 @@
             transition: all 0.3s var(--transition-smooth);
             text-align: center;
         }
-
         .weather-btn:hover {
             background: var(--bg-glass-hover);
             border-color: var(--border-glow);
             color: var(--text-primary);
         }
-
         .weather-btn.active {
             background: linear-gradient(135deg, rgba(52, 211, 153, 0.15), rgba(34, 211, 238, 0.1));
             border-color: var(--accent-emerald);
             color: var(--accent-emerald);
             box-shadow: 0 0 16px rgba(52, 211, 153, 0.12);
         }
-
-        /* ═══════════════════════════════════════════════
-           DASHBOARD GRID
-           ═══════════════════════════════════════════════ */
         .dash-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 28px;
             margin-bottom: 28px;
         }
-
         .dash-grid.triple {
             grid-template-columns: 1fr 1fr 1fr;
         }
-
-        /* ═══════════════════════════════════════════════
-           PRANA SCORE GAUGE
-           ═══════════════════════════════════════════════ */
         .gauge-card {
             padding: 36px 28px 28px;
             display: flex;
@@ -205,7 +172,6 @@
             justify-content: center;
             animation: fadeSlideUp 0.8s 0.2s var(--transition-smooth) both;
         }
-
         .gauge-wrapper {
             position: relative;
             width: 100%;
@@ -215,20 +181,17 @@
             align-items: center;
             justify-content: center;
         }
-
         .gauge-svg {
             width: 100%;
             height: 100%;
             overflow: visible;
         }
-
         .gauge-bg-arc {
             fill: none;
             stroke: rgba(255, 255, 255, 0.06);
             stroke-width: 14;
             stroke-linecap: round;
         }
-
         .gauge-arc {
             fill: none;
             stroke: var(--accent-emerald);
@@ -236,17 +199,14 @@
             stroke-linecap: round;
             transition: stroke-dashoffset 1.2s var(--transition-smooth), stroke 0.8s ease;
         }
-
         .gauge-indicator {
             transition: all 1.2s var(--transition-smooth);
         }
-
         .gauge-tick {
             fill: none;
             stroke: rgba(255, 255, 255, 0.08);
             stroke-width: 1;
         }
-
         .gauge-content {
             position: absolute;
             text-align: center;
@@ -254,7 +214,6 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
-
         .gauge-label {
             font-size: 0.7rem;
             font-weight: 700;
@@ -263,7 +222,6 @@
             color: var(--text-muted);
             margin-bottom: 2px;
         }
-
         .gauge-number {
             font-size: 4.2rem;
             font-weight: 900;
@@ -272,7 +230,6 @@
             font-family: var(--font-sans);
             transition: color 0.6s ease;
         }
-
         .gauge-status {
             margin-top: 6px;
             font-size: 0.95rem;
@@ -280,7 +237,6 @@
             letter-spacing: 0.5px;
             transition: color 0.6s ease;
         }
-
         .gauge-range-labels {
             display: flex;
             justify-content: space-between;
@@ -291,17 +247,12 @@
             font-weight: 600;
             font-family: var(--font-mono);
         }
-
-        /* ═══════════════════════════════════════════════
-           SMART TIPS CARD
-           ═══════════════════════════════════════════════ */
         .tips-card {
             padding: 28px;
             display: flex;
             flex-direction: column;
             animation: fadeSlideUp 0.8s 0.3s var(--transition-smooth) both;
         }
-
         .ai-badge {
             display: inline-flex;
             align-items: center;
@@ -315,7 +266,6 @@
             margin-bottom: 20px;
             width: fit-content;
         }
-
         .status-dot {
             width: 7px;
             height: 7px;
@@ -323,24 +273,20 @@
             background: var(--accent-emerald);
             flex-shrink: 0;
         }
-
         .status-dot.syncing {
             background: var(--accent-amber);
             animation: pulseGlow 1.5s ease-in-out infinite alternate;
         }
-
         @keyframes pulseGlow {
             from { opacity: 0.4; box-shadow: 0 0 4px transparent; }
             to { opacity: 1; box-shadow: 0 0 8px var(--accent-amber); }
         }
-
         .rec-stack {
             display: flex;
             flex-direction: column;
             gap: 14px;
             flex: 1;
         }
-
         .rec-card {
             padding: 16px 20px;
             border-radius: var(--radius-md);
@@ -349,16 +295,13 @@
             transition: all 0.3s ease;
             position: relative;
         }
-
         .rec-card:hover {
             transform: translateX(4px);
             background: rgba(255, 255, 255, 0.03);
         }
-
         .rec-card.success { border-left-color: var(--accent-emerald); background: rgba(52, 211, 153, 0.04); }
         .rec-card.warning { border-left-color: var(--accent-amber); background: rgba(251, 191, 36, 0.04); }
         .rec-card.info    { border-left-color: var(--accent-blue); background: rgba(96, 165, 250, 0.04); }
-
         .rec-title {
             font-size: 0.95rem;
             font-weight: 700;
@@ -367,27 +310,20 @@
             align-items: center;
             gap: 8px;
         }
-
         .rec-body {
             font-size: 0.88rem;
             color: var(--text-secondary);
             line-height: 1.6;
         }
-
-        /* ═══════════════════════════════════════════════
-           SOIL DETAILS CARD
-           ═══════════════════════════════════════════════ */
         .details-card {
             padding: 28px;
             animation: fadeSlideUp 0.8s 0.4s var(--transition-smooth) both;
         }
-
         .detail-grid {
             display: flex;
             flex-direction: column;
             gap: 0;
         }
-
         .detail-row {
             display: flex;
             justify-content: space-between;
@@ -396,58 +332,45 @@
             border-bottom: 1px solid var(--border-subtle);
             transition: background 0.3s ease;
         }
-
         .detail-row:last-child { border-bottom: none; }
-
         .detail-row:hover {
             background: var(--bg-glass);
             margin: 0 -12px;
             padding: 14px 12px;
             border-radius: var(--radius-sm);
         }
-
         .detail-name {
             font-size: 0.92rem;
             color: var(--text-secondary);
             font-weight: 500;
         }
-
         .detail-value {
             font-family: var(--font-mono);
             font-size: 0.95rem;
             font-weight: 700;
             transition: color 0.6s ease;
         }
-
-        /* ═══════════════════════════════════════════════
-           CHART CARD
-           ═══════════════════════════════════════════════ */
         .chart-card {
             padding: 28px;
             display: flex;
             flex-direction: column;
             animation: fadeSlideUp 0.8s 0.5s var(--transition-smooth) both;
         }
-
         .chart-section {
             margin-bottom: 28px;
         }
-
         .chart-section:last-of-type { margin-bottom: 0; }
-
         .chart-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 14px;
         }
-
         .chart-title {
             font-size: 0.88rem;
             font-weight: 600;
             color: var(--text-secondary);
         }
-
         .chart-badge {
             font-size: 0.72rem;
             font-weight: 700;
@@ -456,17 +379,14 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-
         .chart-badge.good {
             background: var(--accent-emerald-dim);
             color: var(--accent-emerald);
         }
-
         .chart-badge.bad {
             background: var(--accent-rose-dim);
             color: var(--accent-rose);
         }
-
         .bar-chart {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -476,7 +396,6 @@
             padding: 6px 0 0;
             border-bottom: 2px solid var(--border-subtle);
         }
-
         .bar-col {
             display: flex;
             flex-direction: column;
@@ -485,14 +404,12 @@
             height: 100%;
             justify-content: flex-end;
         }
-
         .bar-val {
             font-family: var(--font-mono);
             font-size: 0.75rem;
             font-weight: 600;
             color: var(--text-muted);
         }
-
         .bar {
             width: 100%;
             max-width: 50px;
@@ -501,17 +418,14 @@
             height: 0%;
             position: relative;
         }
-
         .bar.emerald {
             background: linear-gradient(180deg, var(--accent-emerald) 0%, rgba(52, 211, 153, 0.4) 100%);
             box-shadow: 0 0 16px rgba(52, 211, 153, 0.15);
         }
-
         .bar.rose {
             background: linear-gradient(180deg, var(--accent-rose) 0%, rgba(251, 113, 133, 0.4) 100%);
             box-shadow: 0 0 16px rgba(251, 113, 133, 0.15);
         }
-
         .bar-label {
             font-size: 0.72rem;
             color: var(--text-muted);
@@ -519,13 +433,11 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-
         .chart-footer {
             margin-top: 20px;
             padding-top: 16px;
             border-top: 1px solid var(--border-subtle);
         }
-
         .chart-footer a {
             color: var(--accent-blue);
             font-size: 0.88rem;
@@ -535,15 +447,10 @@
             gap: 6px;
             transition: all 0.3s ease;
         }
-
         .chart-footer a:hover {
             color: var(--accent-cyan);
             gap: 10px;
         }
-
-        /* ═══════════════════════════════════════════════
-           FOOTER
-           ═══════════════════════════════════════════════ */
         footer {
             position: relative;
             z-index: 1;
@@ -553,14 +460,12 @@
             padding: 50px 6% 24px;
             margin-top: auto;
         }
-
         .footer-grid {
             display: grid;
             grid-template-columns: 1.3fr 1fr 1fr;
             gap: 50px;
             margin-bottom: 36px;
         }
-
         .footer-section h3 {
             font-size: 1rem;
             font-weight: 700;
@@ -568,25 +473,21 @@
             color: var(--text-primary);
             letter-spacing: -0.2px;
         }
-
         .footer-section p,
         .footer-section a {
             font-size: 0.9rem;
             color: var(--text-secondary);
             line-height: 1.8;
         }
-
         .footer-links a {
             display: block;
             margin-bottom: 10px;
             transition: all 0.3s ease;
         }
-
         .footer-links a:hover {
             color: var(--accent-emerald);
             padding-left: 6px;
         }
-
         .footer-bottom {
             text-align: center;
             padding-top: 20px;
@@ -595,22 +496,14 @@
             color: var(--text-muted);
             letter-spacing: 0.3px;
         }
-
-
-
-        /* ═══════════════════════════════════════════════
-           RESPONSIVE
-           ═══════════════════════════════════════════════ */
         @media (max-width: 1024px) {
             .dash-grid { grid-template-columns: 1fr; }
             .dash-grid.triple { grid-template-columns: 1fr; }
             .controls-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
             .control-group.span-2 { grid-column: span 1; }
         }
-
         @media (max-width: 768px) {
             .hamburger { display: flex; }
-
             .nav-links {
                 position: fixed;
                 top: 0;
@@ -627,22 +520,18 @@
                 border-left: 1px solid var(--border-subtle);
                 z-index: 999;
             }
-
             .nav-links.active { right: 0; }
-
             .nav-links li a {
                 font-size: 1.05rem;
                 padding: 14px 20px;
                 width: 100%;
                 border-radius: var(--radius-sm);
             }
-
             .page-header h1 { font-size: 1.7rem; }
             .gauge-number { font-size: 3.5rem; }
             .footer-grid { grid-template-columns: 1fr; gap: 30px; }
             .controls-grid { grid-template-columns: 1fr 1fr; }
         }
-
         @media (max-width: 480px) {
             main { padding: 24px 4% 60px; }
             .controls-grid { grid-template-columns: 1fr; padding: 20px; }
@@ -651,15 +540,14 @@
     </style>
 </head>
 <body>
-    <!-- Animated background -->
     <div class="bg-mesh"></div>
     <div class="bg-grain"></div>
-
-    <!-- ─── HEADER ──────────────────────────────────── -->
+    <div class="particles" id="particles"></div>
     <header id="navbar">
         <a href="index.html" class="brand">
             <div class="brand-icon">
-                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 4v16M4 12h16"/></svg>
+                <img src="dark.png" alt="PranaOS" class="nav-logo-dark" style="width: 100%; height: 100%; object-fit: contain;">
+                <img src="light.png" alt="PranaOS" class="nav-logo-light" style="width: 100%; height: 100%; object-fit: contain;">
             </div>
             <span class="brand-name">PranaOS</span>
         </a>
@@ -676,18 +564,13 @@
             </ul>
         </div>
     </header>
-
-    <!-- ─── MAIN CONTENT ────────────────────────────── -->
     <main>
         <div class="page-header">
             <h1>System <span>Dashboard</span></h1>
             <p>Real-time soil intelligence and smart garden insights</p>
         </div>
-
-        <!-- ─── CONTROL PANEL ───────────────────────── -->
         <section class="controls-section">
             <div class="glass-panel controls-grid">
-                <!-- Weather -->
                 <div class="control-group span-2">
                     <div class="control-label">Weather Forecast</div>
                     <div class="weather-group">
@@ -697,7 +580,6 @@
                         <button class="weather-btn" data-rain="true" data-desc="Heavy rain or storm coming.">⛈️ Storm</button>
                     </div>
                 </div>
-                <!-- Land Type -->
                 <div class="control-group">
                     <div class="control-label">Land Type</div>
                     <select id="input-land" class="custom-select">
@@ -706,7 +588,6 @@
                         <option value="hill">Hill / Slope</option>
                     </select>
                 </div>
-                <!-- Crop Type -->
                 <div class="control-group">
                     <div class="control-label">Crop Type</div>
                     <select id="input-crop" class="custom-select">
@@ -716,51 +597,40 @@
                         <option value="legumes">Beans &amp; Legumes</option>
                     </select>
                 </div>
-                <!-- EC -->
                 <div class="control-group">
                     <div class="control-label">Elec. Cond (EC) <span class="control-value" id="ec-val">1.75</span></div>
                     <input type="range" id="input-ec" min="0.5" max="3.5" step="0.05" value="1.75">
                 </div>
-                <!-- pH -->
                 <div class="control-group">
                     <div class="control-label">Soil pH <span class="control-value" id="ph-val">6.80</span></div>
                     <input type="range" id="input-ph" min="0.0" max="14.0" step="0.1" value="6.8">
                 </div>
-                <!-- Temperature -->
                 <div class="control-group">
                     <div class="control-label">Temp °C <span class="control-value" id="temp-val">24.5</span></div>
                     <input type="range" id="input-temp" min="10.0" max="40.0" step="0.5" value="24.5">
                 </div>
-                <!-- Moisture -->
                 <div class="control-group">
                     <div class="control-label">Moisture % <span class="control-value" id="moist-val">38.2</span></div>
                     <input type="range" id="input-moist" min="10.0" max="80.0" step="0.5" value="38.2">
                 </div>
-                <!-- Nitrogen -->
                 <div class="control-group">
                     <div class="control-label">Nitrogen (N) <span class="control-value" id="n-val">44.0</span></div>
                     <input type="range" id="input-n" min="10.0" max="80.0" step="1.0" value="44.0">
                 </div>
-                <!-- Phosphorus -->
                 <div class="control-group">
                     <div class="control-label">Phosphorus (P) <span class="control-value" id="p-val">23.5</span></div>
                     <input type="range" id="input-p" min="5.0" max="50.0" step="0.5" value="23.5">
                 </div>
-                <!-- Potassium -->
                 <div class="control-group">
                     <div class="control-label">Potassium (K) <span class="control-value" id="k-val">148.0</span></div>
                     <input type="range" id="input-k" min="50.0" max="250.0" step="1.0" value="148.0">
                 </div>
             </div>
         </section>
-
-        <!-- ─── TOP ROW: Gauge + Tips ───────────────── -->
         <div class="dash-grid">
-            <!-- PranaScore Gauge -->
             <div class="glass-panel gauge-card">
                 <div class="gauge-wrapper">
                     <svg class="gauge-svg" viewBox="0 0 400 260">
-                        <!-- Tick marks -->
                         <g opacity="0.12">
                             <line x1="70" y1="210" x2="70" y2="198" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
                             <line x1="103" y1="164" x2="109" y2="173" stroke="white" stroke-width="1"/>
@@ -790,8 +660,6 @@
                     <span>100</span>
                 </div>
             </div>
-
-            <!-- Smart Tips -->
             <div class="glass-panel tips-card">
                 <div class="panel-header">
                     <div class="panel-icon" style="background: var(--accent-emerald-dim);">🌱</div>
@@ -810,12 +678,12 @@
                         <div class="rec-body">Fetching the best advice for your land and crops.</div>
                     </div>
                 </div>
+                <button id="save-suggestions-btn" style="width: 100%; margin-top: 15px; padding: 12px; background: rgba(52, 211, 153, 0.1); color: var(--accent-emerald); border: 1px solid var(--accent-emerald); border-radius: var(--radius-sm); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                    💾 Save Suggestions to Cloud
+                </button>
             </div>
         </div>
-
-        <!-- ─── BOTTOM ROW: Details + Charts ────────── -->
         <div class="dash-grid">
-            <!-- Soil Details -->
             <div class="glass-panel details-card">
                 <div class="panel-header">
                     <div class="panel-icon" style="background: var(--accent-cyan-dim);">🧪</div>
@@ -855,8 +723,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Charts -->
             <div class="glass-panel chart-card">
                 <div class="panel-header">
                     <div class="panel-icon" style="background: var(--accent-violet-dim);">📊</div>
@@ -865,8 +731,6 @@
                         <div class="panel-subtitle">4-week trend analysis</div>
                     </div>
                 </div>
-
-                <!-- Nitrogen chart -->
                 <div class="chart-section">
                     <div class="chart-header">
                         <span class="chart-title">Nitrogen Levels</span>
@@ -879,8 +743,6 @@
                         <div class="bar-col"><span class="bar-val">44</span><div class="bar emerald" data-height="73%"></div><span class="bar-label">W4</span></div>
                     </div>
                 </div>
-
-                <!-- pH chart -->
                 <div class="chart-section">
                     <div class="chart-header">
                         <span class="chart-title">Soil pH</span>
@@ -899,8 +761,6 @@
             </div>
         </div>
     </main>
-
-    <!-- ─── FOOTER ──────────────────────────────────── -->
     <footer>
         <div class="footer-grid">
             <div class="footer-section">
@@ -924,38 +784,28 @@
             </div>
         </div>
         <div class="footer-bottom">
-            &copy; Vivaan Lal 2026
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px; width: 100%;">
+                <div>&copy; Vivaan Lal 2026</div>
+                <div style="display: flex; gap: 24px;">
+                    <span><strong style="color: var(--accent-emerald);">1,450+</strong> Projected Sites Covered</span>
+                    <span><strong style="color: var(--accent-cyan);">2.8M+</strong> Data Points Handled</span>
+                </div>
+            </div>
         </div>
     </footer>
-
-    <!-- ═══════════════════════════════════════════════
-         JAVASCRIPT
-         ═══════════════════════════════════════════════ -->
     <script>
-
-        // ─── State ──────────────────────────────────
         let sensorData = { ec: 1.75, pH: 6.80, temp: 24.5, moist: 38.2, n: 44.0, p: 23.5, k: 148.0 };
         let rainForecast = false;
         let weatherDesc = "Clear skies, no rain expected.";
         let landType = "plain";
         let cropType = "vegetables";
-
-        // ─── Gauge refs ─────────────────────────────
         const gaugeArc = document.getElementById('PranaArc');
         const gaugeIndicator = document.getElementById('PranaIndicator');
         const gaugeNumber = document.getElementById('PranaScoreNumber');
         const gaugeStatus = document.getElementById('gauge-status');
         const arcLength = gaugeArc.getTotalLength();
-
         gaugeArc.style.strokeDasharray = arcLength;
         gaugeArc.style.strokeDashoffset = arcLength;
-
-        // ─── PranaScore Algorithm v2 (research-backed) ─
-        // Crop profiles derived from FAO, TNAU, NDSU, and
-        // university extension agronomic research data.
-        // Each profile defines: ideal value, acceptable min/max,
-        // and a tolerance sigma for Gaussian scoring.
-        // ─────────────────────────────────────────────────
         const CROP_PROFILES = {
             vegetables: {
                 label: 'Vegetables',
@@ -992,44 +842,33 @@
                 pH:    { ideal: 6.5, min: 5.8, max: 7.2, sigma: 0.6 },
                 temp:  { ideal: 24,  min: 16,  max: 32,  sigma: 5 },
                 moist: { ideal: 42,  min: 28,  max: 55,  sigma: 10 },
-                n:     { ideal: 22,  min: 10,  max: 40,  sigma: 12 },  // legumes fix N₂
-                p:     { ideal: 38,  min: 20,  max: 55,  sigma: 12 },  // high P need
+                n:     { ideal: 22,  min: 10,  max: 40,  sigma: 12 },  
+                p:     { ideal: 38,  min: 20,  max: 55,  sigma: 12 },  
                 k:     { ideal: 140, min: 70,  max: 210, sigma: 50 },
                 ec:    { ideal: 1.2, min: 0.3, max: 2.0, sigma: 0.5 },
             },
         };
-
-        // Land drainage modifiers — hills drain fast, plains retain
         const LAND_MOD = {
             plain:   { moistShift: 0,  drainSpeed: 'slow',   waterlogRisk: 'high' },
             plateau: { moistShift: +3, drainSpeed: 'medium', waterlogRisk: 'medium' },
             hill:    { moistShift: +8, drainSpeed: 'fast',   waterlogRisk: 'low' },
         };
-
-        // Weather state categories
         const WEATHER = {
             clear:  { rainComing: false, severity: 0, label: 'Clear' },
             cloudy: { rainComing: false, severity: 0, label: 'Cloudy' },
             rain:   { rainComing: true,  severity: 1, label: 'Rain' },
             storm:  { rainComing: true,  severity: 2, label: 'Storm' },
         };
-
-        // Get current weather key from description
         function getWeatherKey(desc) {
             if (desc.includes('Storm') || desc.includes('Heavy')) return 'storm';
             if (desc.includes('Light rain') || (desc.includes('Rain') && !desc.includes('no rain'))) return 'rain';
             if (desc.includes('Cloudy') || desc.includes('cloudy')) return 'cloudy';
             return 'clear';
         }
-
-        // Gaussian bell-curve scorer — peaks at 1.0 at ideal, drops
-        // smoothly toward 0 as value deviates. Sigma controls width.
         function gaussianScore(actual, ideal, sigma) {
             const diff = actual - ideal;
             return Math.exp(-(diff * diff) / (2 * sigma * sigma));
         }
-
-        // Hard penalty for extreme out-of-range values
         function rangePenalty(actual, min, max) {
             if (actual < min) {
                 const under = (min - actual) / min;
@@ -1041,28 +880,21 @@
             }
             return 1.0;
         }
-
-        // Combined parameter score: Gaussian × range clamp
         function paramScore(actual, profile) {
             const g = gaussianScore(actual, profile.ideal, profile.sigma);
             const r = rangePenalty(actual, profile.min, profile.max);
             return g * r;
         }
-
         function calcPranaScore(d, desc, land, crop) {
             const p = CROP_PROFILES[crop];
             const lm = LAND_MOD[land];
             const wx = WEATHER[getWeatherKey(desc)];
-
-            // Adjust moisture ideals based on land type
             const moistProfile = {
                 ...p.moist,
                 ideal: p.moist.ideal + lm.moistShift,
                 min:   p.moist.min + lm.moistShift * 0.5,
                 max:   p.moist.max + lm.moistShift * 0.3,
             };
-
-            // Individual scores (0..1)
             const scores = {
                 ec:    paramScore(d.ec, p.ec),
                 pH:    paramScore(d.pH, p.pH),
@@ -1072,68 +904,42 @@
                 p:     paramScore(d.p, p.p),
                 k:     paramScore(d.k, p.k),
             };
-
-            // Weighted combination
-            // Moisture is most critical (25%), then pH (15%),
-            // then NPK (12% each = 36%), temp (12%), EC (12%)
             const weights = {
                 ec: 0.12, pH: 0.15, temp: 0.12,
                 moist: 0.25, n: 0.12, p: 0.12, k: 0.12,
             };
-
             let total = 0;
             for (const key in scores) {
                 total += scores[key] * weights[key];
             }
-
-            // ── Weather compound penalties ──
-            // Rain coming + already high moisture = waterlogging risk
             if (wx.rainComing && d.moist > moistProfile.ideal) {
                 const excessFactor = (d.moist - moistProfile.ideal) / 20;
                 total -= 0.05 * wx.severity * Math.min(excessFactor, 1);
             }
-
-            // Storm always hurts (wind damage, erosion)
             if (wx.severity === 2) total -= 0.06;
-
-            // Rain on a plain with high moisture = flooding danger
             if (wx.rainComing && lm.waterlogRisk === 'high' && d.moist > moistProfile.max * 0.85) {
                 total -= 0.08;
             }
-
-            // Extreme waterlogging penalty (over 70% moisture)
             if (d.moist > 70) {
                 total -= 0.12 * ((d.moist - 70) / 10);
             }
-
-            // Extreme pH penalty
             if (d.pH < 4.5 || d.pH > 9.0) total -= 0.10;
-
-            // Frost / heat stress penalties
             if (d.temp < 5)  total -= 0.15;
             if (d.temp > 38) total -= 0.12;
-
-            // High salinity penalty
             if (d.ec > p.ec.max * 1.3) total -= 0.10;
-
             return Math.round(Math.min(Math.max(total, 0), 1) * 100);
         }
-
-        // ─── Animated counter ───────────────────────
         let currentDisplayScore = 0;
         let animFrame = null;
-
         function animateScore(target) {
             if (animFrame) cancelAnimationFrame(animFrame);
             const start = currentDisplayScore;
             const diff = target - start;
             const duration = 800;
             const startTime = performance.now();
-
             function step(time) {
                 const elapsed = time - startTime;
                 const progress = Math.min(elapsed / duration, 1);
-                // ease-out cubic
                 const eased = 1 - Math.pow(1 - progress, 3);
                 currentDisplayScore = Math.round(start + diff * eased);
                 gaugeNumber.textContent = currentDisplayScore;
@@ -1143,10 +949,7 @@
             }
             animFrame = requestAnimationFrame(step);
         }
-
-        // ─── Update Dashboard ───────────────────────
         function updateDashboard() {
-            // Update detail readouts
             document.getElementById('ec').textContent = sensorData.ec.toFixed(2) + " dS/m";
             document.getElementById('soil').textContent = sensorData.pH.toFixed(2);
             document.getElementById('temp').textContent = sensorData.temp.toFixed(1) + " °C";
@@ -1154,11 +957,7 @@
             document.getElementById('n').textContent = sensorData.n.toFixed(1) + " mg/kg";
             document.getElementById('p').textContent = sensorData.p.toFixed(1) + " mg/kg";
             document.getElementById('k').textContent = sensorData.k.toFixed(1) + " mg/kg";
-
-            // Calculate score
             const score = calcPranaScore(sensorData, weatherDesc, landType, cropType);
-
-            // Interpolate gauge color: rose(0) → amber(50) → emerald(100)
             function lerpColor(a, b, t) {
                 return a.map((c, i) => Math.round(c + (b[i] - c) * t));
             }
@@ -1174,59 +973,35 @@
                 }
                 return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
             }
-
             const arcColor = scoreToColor(score);
-
-            // Determine status text
             let statusText;
             if (score >= 85)      statusText = 'Excellent Health';
             else if (score >= 70) statusText = 'Good Condition';
             else if (score >= 50) statusText = 'Fair — Monitor';
             else if (score >= 30) statusText = 'Poor — Act Now';
             else                  statusText = 'Critical Danger';
-
-            // Update gauge visuals
             gaugeStatus.textContent = statusText;
             gaugeStatus.style.color = arcColor;
             gaugeNumber.style.color = arcColor;
-
-            // Update arc stroke color + glow
             gaugeArc.style.stroke = arcColor;
             gaugeArc.style.filter = `drop-shadow(0 0 10px ${arcColor})`;
             gaugeIndicator.style.filter = `drop-shadow(0 0 8px ${arcColor})`;
-
-            // Animate score number
             animateScore(score);
-
-            // Arc + indicator
             const fraction = score / 100;
             const offset = arcLength * (1 - fraction);
             gaugeArc.style.strokeDashoffset = offset;
-
             const point = gaugeArc.getPointAtLength(arcLength * fraction);
             gaugeIndicator.setAttribute("cx", point.x);
             gaugeIndicator.setAttribute("cy", point.y);
             gaugeIndicator.style.fill = arcColor;
-
-            // Detail value colors
             document.querySelectorAll('.detail-value').forEach(el => el.style.color = arcColor);
-
-            // AI status
             const dot = document.getElementById('ai-status-dot');
             const txt = document.getElementById('ai-status-text');
             dot.classList.remove('syncing');
             dot.style.background = rainForecast ? 'var(--accent-blue)' : 'var(--accent-emerald)';
             txt.textContent = `Online · ${weatherDesc}`;
-
-            // Recommendations
             updateRecommendations(sensorData, rainForecast, landType, cropType);
         }
-
-
-        // ─── Smart Recommendations v2 ──────────────
-        // Generates contextual, multi-category advice using crop
-        // profiles, weather forecast, land type, and sensor data.
-        // ────────────────────────────────────────────
         function updateRecommendations(m, rain, land, crop) {
             const stack = document.getElementById('ai-rec-stack');
             const p = CROP_PROFILES[crop];
@@ -1237,8 +1012,6 @@
             const moistMin = p.moist.min + lm.moistShift * 0.5;
             const cards = [];
             const moistPct = m.moist;
-
-            // ── 💧 WATER / MOISTURE ──
             if (moistPct > 70) {
                 cards.push({
                     icon: '🚨', title: 'Waterlogging Alert',
@@ -1297,14 +1070,11 @@
                     });
                 }
             }
-
-            // ── 🌱 NPK FEEDING ──
             const nLow = m.n < p.n.min, nHigh = m.n > p.n.max;
             const pLow = m.p < p.p.min, pHigh = m.p > p.p.max;
             const kLow = m.k < p.k.min, kHigh = m.k > p.k.max;
             const anyDeficiency = nLow || pLow || kLow;
             const anyExcess = nHigh || pHigh || kHigh;
-
             if (anyDeficiency || anyExcess) {
                 let feedParts = [];
                 if (nLow) {
@@ -1343,8 +1113,6 @@
                         : `N-P-K is within acceptable range but not optimal. Fine-tune by aiming for N:${p.n.ideal}, P:${p.p.ideal}, K:${p.k.ideal} mg/kg for best results.`
                 });
             }
-
-            // ── 🧪 SOIL pH ──
             if (m.pH < 4.5) {
                 cards.push({ icon: '🧪', title: 'Soil pH — Critical', cls: 'warning',
                     body: `pH is <strong>${m.pH.toFixed(1)}</strong> — extremely acidic! Aluminum toxicity risk is high. <strong>Apply agricultural lime immediately</strong> (2-4 kg/10m²) and retest in 2 weeks.`
@@ -1369,8 +1137,6 @@
                         : `pH is <strong>${m.pH.toFixed(1)}</strong> — acceptable but not optimal for ${p.label} (ideal: ${p.pH.ideal}). Consider gradual amendments.`
                 });
             }
-
-            // ── 🌡️ TEMPERATURE ──
             if (m.temp < 5) {
                 cards.push({ icon: '🥶', title: 'Frost Warning', cls: 'warning',
                     body: `Soil temperature is <strong>${m.temp.toFixed(1)}°C</strong> — near-freezing! Root activity has stopped. <strong>Use mulch, row covers, or move containers indoors.</strong>`
@@ -1395,8 +1161,6 @@
                     });
                 }
             }
-
-            // ── ⚡ EC / SALINITY ──
             if (m.ec > p.ec.max * 1.4) {
                 cards.push({ icon: '⚡', title: 'Salinity — Dangerous', cls: 'warning',
                     body: `EC is <strong>${m.ec.toFixed(2)} dS/m</strong> — well above safe limit for ${p.label} (max ${p.ec.max} dS/m). Plants can't absorb water even when soil is wet. <strong>Flush with clean water.</strong>`
@@ -1410,8 +1174,6 @@
                     body: `EC at <strong>${m.ec.toFixed(2)} dS/m</strong> is very low — nutrient-poor soil. Consider a balanced slow-release fertilizer.`
                 });
             }
-
-            // ── ⛈️ WEATHER COMPOUND WARNINGS ──
             if (wx.severity === 2) {
                 let stormTip = `<strong>Storm incoming!</strong> Expect wind damage, soil erosion, and potential flooding.`;
                 if (land === 'hill') stormTip += ' On slopes, stake tall plants and watch for topsoil erosion.';
@@ -1419,8 +1181,7 @@
                 if (m.temp < 15) stormTip += ' Cold rain may further lower soil temperature — protect sensitive seedlings.';
                 cards.push({ icon: '⛈️', title: 'Storm Preparation', cls: 'warning', body: stormTip });
             }
-
-            // Render all cards
+            window.currentAiCards = cards;
             stack.innerHTML = cards.map(c =>
                 `<div class="rec-card ${c.cls}">
                     <div class="rec-title">${c.icon} ${c.title}</div>
@@ -1428,9 +1189,6 @@
                 </div>`
             ).join('');
         }
-
-
-        // ─── Slider Bindings ────────────────────────
         const sliderMap = {
             'ec':    { key: 'ec',    fmt: v => v.toFixed(2) },
             'ph':    { key: 'pH',   fmt: v => v.toFixed(2) },
@@ -1440,12 +1198,9 @@
             'p':     { key: 'p',    fmt: v => v.toFixed(1) },
             'k':     { key: 'k',    fmt: v => v.toFixed(1) },
         };
-
         Object.entries(sliderMap).forEach(([id, { key, fmt }]) => {
             const input = document.getElementById(`input-${id}`);
             const display = document.getElementById(`${id}-val`);
-
-            // Gradient fill for slider track
             function updateTrackFill() {
                 const min = parseFloat(input.min);
                 const max = parseFloat(input.max);
@@ -1453,7 +1208,6 @@
                 const pct = ((val - min) / (max - min)) * 100;
                 input.style.background = `linear-gradient(to right, var(--accent-emerald) 0%, var(--accent-cyan) ${pct}%, var(--bg-elevated) ${pct}%)`;
             }
-
             input.addEventListener('input', (e) => {
                 const v = parseFloat(e.target.value);
                 sensorData[key] = v;
@@ -1461,22 +1215,16 @@
                 updateTrackFill();
                 updateDashboard();
             });
-
             updateTrackFill();
         });
-
-        // ─── Dropdown Bindings ──────────────────────
         document.getElementById('input-land').addEventListener('change', (e) => {
             landType = e.target.value;
             updateDashboard();
         });
-
         document.getElementById('input-crop').addEventListener('change', (e) => {
             cropType = e.target.value;
             updateDashboard();
         });
-
-        // ─── Weather Buttons ────────────────────────
         document.querySelectorAll('.weather-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 document.querySelectorAll('.weather-btn').forEach(b => b.classList.remove('active'));
@@ -1486,17 +1234,56 @@
                 updateDashboard();
             });
         });
-
-        // ─── Animate bars on load ───────────────────
         function animateBars() {
             document.querySelectorAll('.bar').forEach(bar => {
                 bar.style.height = bar.getAttribute('data-height');
             });
         }
-
-        // ─── Init ───────────────────────────────────
         updateDashboard();
         setTimeout(animateBars, 400);
+        document.getElementById('save-suggestions-btn').addEventListener('click', async (e) => {
+            const btn = e.target;
+            if (!window.auth || !window.db) {
+                btn.textContent = "⚠️ Cloud connection pending...";
+                setTimeout(() => btn.textContent = "💾 Save Suggestions to Cloud", 2000);
+                return;
+            }
+            const user = window.auth.currentUser;
+            if (!user) {
+                btn.textContent = "⚠️ Please Login First";
+                setTimeout(() => btn.textContent = "💾 Save Suggestions to Cloud", 2000);
+                return;
+            }
+            if (!window.currentAiCards || window.currentAiCards.length === 0) {
+                btn.textContent = "No suggestions to save.";
+                setTimeout(() => btn.textContent = "💾 Save Suggestions to Cloud", 2000);
+                return;
+            }
+            try {
+                btn.textContent = "Saving...";
+                btn.disabled = true;
+                await window.firebaseAddDoc(window.firebaseCollection(window.db, "suggestions"), {
+                    userId: user.uid,
+                    timestamp: window.firebaseServerTimestamp(),
+                    sensorData: sensorData,
+                    cards: window.currentAiCards,
+                    crop: cropType,
+                    land: landType,
+                    weather: weatherDesc
+                });
+                btn.textContent = "✅ Saved Successfully!";
+                btn.style.background = "var(--accent-emerald-dim)";
+            } catch (error) {
+                console.error("Error saving suggestions: ", error);
+                btn.textContent = "❌ Error Saving";
+            } finally {
+                setTimeout(() => {
+                    btn.textContent = "💾 Save Suggestions to Cloud";
+                    btn.disabled = false;
+                    btn.style.background = "rgba(52, 211, 153, 0.1)";
+                }, 3000);
+            }
+        });
     </script>
     <script type="module" src="firebase_config.js"></script>
     <script src="theme.js"></script>
