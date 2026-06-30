@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="theme.css?v=2">
+    <link rel="shortcut icon" href="ChatGPT Image May 31, 2026, 08_23_54 PM.png" type="image/x-icon">
+    <title>PranaOS - Support</title>
+</head>
+<body>
+    <div class="bg-mesh"></div>
+    <div class="bg-grain"></div>
+    <div class="particles" id="particles"></div>
+    <header id="navbar">
+        <div class="brand">
+            <a href="index.html" class="brand" style="text-decoration: none;">
+                <div class="brand-icon">
+                    <img src="dark.png" alt="PranaOS" class="nav-logo-dark" style="width: 100%; height: 100%; object-fit: contain;">
+                    <img src="light.png" alt="PranaOS" class="nav-logo-light" style="width: 100%; height: 100%; object-fit: contain;">
+                </div>
+                <div class="brand-name">PranaOS</div>
+            </a>
+        </div>
+        <ul class="nav-links" id="nav-menu">
+            <li><a href="dash.html">Dashboard</a></li>
+            <li><a href="support.html" class="active">Support</a></li>
+            <li><a href="myacc.html">My Account</a></li>
+            <li><a href="login.html" class="auth-link">Login</a></li>
+        </ul>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">🌙</button>
+        <div class="hamburger" id="hamburger-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+    <div id="support-toast" style="position: fixed; top: 20px; right: 20px; z-index: 9999; padding: 16px 24px; border-radius: var(--radius-sm); color: #fff; font-weight: 600; font-size: 0.95rem; opacity: 0; transform: translateY(-20px); transition: opacity 0.4s ease, transform 0.4s ease; pointer-events: none; max-width: 360px; box-shadow: 0 8px 30px rgba(0,0,0,0.3);"></div>
+    <main style="display: flex; justify-content: center; align-items: flex-start; min-height: 70vh; padding-top: 40px; gap: 40px; flex-wrap: wrap;">
+        <div class="liquid-glass" style="flex: 1; min-width: 320px; max-width: 500px; padding: 40px; border-top: 4px solid var(--accent-emerald);">
+            <div style="margin-bottom: 30px;">
+                <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 8px;">How can we help?</h2>
+                <p style="color: var(--text-secondary); font-size: 0.95rem;">Send us a message and we'll respond shortly.</p>
+            </div>
+            <form id="support-form">
+                <div style="margin-bottom: 20px;">
+                    <label for="support-name" style="display: block; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-secondary);">Name</label>
+                    <input id="support-name" type="text" placeholder="Your name" required style="width: 100%; padding: 12px 16px; background: var(--bg-deep); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); color: var(--text-primary); outline: none; transition: border-color 0.3s ease;">
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label for="support-email" style="display: block; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-secondary);">Email</label>
+                    <input id="support-email" type="email" placeholder="you@example.com" required style="width: 100%; padding: 12px 16px; background: var(--bg-deep); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); color: var(--text-primary); outline: none; transition: border-color 0.3s ease;">
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label for="support-category" style="display: block; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-secondary);">Category</label>
+                    <select id="support-category" style="width: 100%; padding: 12px 16px; background: var(--bg-deep); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); color: var(--text-primary); outline: none; transition: border-color 0.3s ease; cursor: pointer;">
+                        <option value="general">General Question</option>
+                        <option value="bug">Bug Report</option>
+                        <option value="feature">Feature Request</option>
+                        <option value="account">Account Issue</option>
+                        <option value="sensors">Sensor / Hardware</option>
+                        <option value="billing">Billing / Subscription</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 24px;">
+                    <label for="support-message" style="display: block; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-secondary);">Message</label>
+                    <textarea id="support-message" rows="4" placeholder="Describe your issue or question in detail…" required style="width: 100%; padding: 12px 16px; background: var(--bg-deep); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); color: var(--text-primary); outline: none; resize: vertical; transition: border-color 0.3s ease;"></textarea>
+                </div>
+                <button type="button" id="support-submit-btn" onclick="submitSupportQuestion()" style="width: 100%; padding: 14px; background: linear-gradient(135deg, var(--accent-emerald), var(--accent-cyan)); border: none; border-radius: var(--radius-sm); color: #fff; font-weight: 700; font-size: 1rem; cursor: pointer; box-shadow: var(--shadow-glow); transition: opacity 0.3s ease, transform 0.2s ease;">
+                    Send Message
+                </button>
+            </form>
+        </div>
+        <div style="flex: 1; min-width: 320px; max-width: 450px; display: flex; flex-direction: column; gap: 30px;">
+            <div class="liquid-glass" style="padding: 40px; border-top: 4px solid var(--accent-violet);">
+                <div style="margin-bottom: 30px;">
+                    <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 8px;">Frequently Asked Questions</h2>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    <div>
+                        <h4 style="color: var(--accent-emerald); margin-bottom: 6px;">How do I check my sensor health?</h4>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;">Navigate to the Dashboard and look for the 'System Health' status indicator on the top left.</p>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--accent-cyan); margin-bottom: 6px;">Can I change the crop profile?</h4>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;">Yes, you can toggle between Grains, Vegetables, Orchards, and Pasture in the Dashboard settings.</p>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--accent-violet); margin-bottom: 6px;">What does a low PranaScore mean?</h4>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;">A low score typically indicates nutrient deficiency or waterlogging. Check the AI Recommendations panel for specific advice.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="liquid-glass" style="padding: 40px; border-top: 4px solid var(--accent-cyan);">
+                <div style="margin-bottom: 20px;">
+                    <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 8px;">Your Past Questions</h2>
+                    <p style="color: var(--text-secondary); font-size: 0.85rem;">Questions you've previously submitted.</p>
+                </div>
+                <div id="past-questions-container" style="display: flex; flex-direction: column; gap: 16px;">
+                    <p id="past-questions-placeholder" style="color: var(--text-muted); font-size: 0.9rem; font-style: italic;">Log in to view your past questions.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="liquid-glass" style="margin-top: auto; border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 40px 6%;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 40px;">
+            <div>
+                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 16px; color: var(--accent-emerald);">Our Story</h3>
+                <p style="color: var(--text-secondary); font-size: 0.95rem;">
+                    At PranaOS, we transform urban infrastructure into intelligent ecosystems. By combining porous concrete, IoT sensors and AI-driven analytics, we help cities monitor and protect the hidden health of urban soil and tree roots. Our technology reduces tree loss, prevents flooding, and lowers maintenance costs.
+                </p>
+            </div>
+            <div>
+                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 16px; color: var(--accent-cyan);">Contact Us</h3>
+                <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 8px;"><strong>Name:</strong> Vivaan Lal</p>
+                <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 8px;"><strong>Email:</strong> vivaanlal21@gmail.com</p>
+                <p style="color: var(--text-secondary); font-size: 0.95rem;"><strong>Phone:</strong> 76768699070</p>
+            </div>
+            <div>
+                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 16px; color: var(--accent-violet);">Sitemap</h3>
+                <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px;">
+                    <li><a href="index.html" style="color: var(--text-secondary);">Landing Page</a></li>
+                    <li><a href="dash.html" style="color: var(--text-secondary);">Dashboard</a></li>
+                    <li><a href="support.html" style="color: var(--text-secondary);">Support</a></li>
+                    <li><a href="myacc.html" style="color: var(--text-secondary);">My Account</a></li>
+                </ul>
+            </div>
+        </div>
+        <div style="text-align: center; color: var(--text-muted); font-size: 0.85rem; padding-top: 20px; border-top: 1px solid var(--border-subtle);">
+            &copy; Vivaan Lal 2026
+        </div>
+    </footer>
+    <script type="module" src="firebase_config.js"></script>
+    <script src="theme.js"></script>
+    <script>
+        function showToast(message, isError) {
+            const toast = document.getElementById('support-toast');
+            toast.textContent = message;
+            toast.style.background = isError
+                ? 'linear-gradient(135deg, #ef4444, #dc2626)'
+                : 'linear-gradient(135deg, #10b981, #06b6d4)';
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateY(0)';
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(-20px)';
+            }, 3500);
+        }
+        async function submitSupportQuestion() {
+            const name = document.getElementById('support-name').value.trim();
+            const email = document.getElementById('support-email').value.trim();
+            const category = document.getElementById('support-category').value;
+            const message = document.getElementById('support-message').value.trim();
+            const btn = document.getElementById('support-submit-btn');
+            if (!name || !email || !message) {
+                showToast('Please fill in all required fields.', true);
+                return;
+            }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showToast('Please enter a valid email address.', true);
+                return;
+            }
+            if (!window.db || !window.firebaseAddDoc || !window.firebaseCollection) {
+                showToast('Firebase not initialized. Please try again in a moment.', true);
+                return;
+            }
+            btn.disabled = true;
+            btn.style.opacity = '0.6';
+            btn.textContent = 'Sending…';
+            try {
+                const userId = window.auth && window.auth.currentUser ? window.auth.currentUser.uid : 'anonymous';
+                await window.firebaseAddDoc(
+                    window.firebaseCollection(window.db, 'support_questions'),
+                    {
+                        userId: userId,
+                        name: name,
+                        email: email,
+                        category: category,
+                        message: message,
+                        status: 'open',
+                        createdAt: window.firebaseServerTimestamp()
+                    }
+                );
+                showToast('✓ Message sent! We\'ll get back to you soon.', false);
+                document.getElementById('support-message').value = '';
+                document.getElementById('support-category').value = 'general';
+                loadPastQuestions();
+            } catch (err) {
+                console.error('Error saving support question:', err);
+                showToast('Failed to send message. Please try again.', true);
+            } finally {
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                btn.textContent = 'Send Message';
+            }
+        }
+        async function loadPastQuestions() {
+            const container = document.getElementById('past-questions-container');
+            const placeholder = document.getElementById('past-questions-placeholder');
+            if (!window.auth || !window.auth.currentUser) {
+                if (placeholder) placeholder.textContent = 'Log in to view your past questions.';
+                return;
+            }
+            if (!window.db) return;
+            try {
+                const { query, where, getDocs, collection } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js");
+                const uid = window.auth.currentUser.uid;
+                const q = query(
+                    collection(window.db, 'support_questions'),
+                    where('userId', '==', uid)
+                );
+                const snapshot = await getDocs(q);
+                container.innerHTML = '';
+                if (snapshot.empty) {
+                    container.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem; font-style: italic;">No questions submitted yet.</p>';
+                    return;
+                }
+                const docs = [];
+                snapshot.forEach(doc => docs.push(doc));
+                docs.sort((a, b) => {
+                    const aTime = a.data().createdAt ? a.data().createdAt.toMillis() : 0;
+                    const bTime = b.data().createdAt ? b.data().createdAt.toMillis() : 0;
+                    return bTime - aTime;
+                });
+                const categoryLabels = {
+                    general: 'General',
+                    bug: 'Bug Report',
+                    feature: 'Feature Request',
+                    account: 'Account Issue',
+                    sensors: 'Sensor / Hardware',
+                    billing: 'Billing / Subscription'
+                };
+                const categoryColors = {
+                    general: 'var(--accent-emerald)',
+                    bug: '#ef4444',
+                    feature: 'var(--accent-violet)',
+                    account: 'var(--accent-cyan)',
+                    sensors: '#f59e0b',
+                    billing: '#8b5cf6'
+                };
+                docs.forEach(doc => {
+                    const data = doc.data();
+                    const date = data.createdAt ? data.createdAt.toDate().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Just now';
+                    const catLabel = categoryLabels[data.category] || data.category;
+                    const catColor = categoryColors[data.category] || 'var(--accent-emerald)';
+                    const card = document.createElement('div');
+                    card.style.cssText = 'padding: 14px 16px; background: var(--bg-deep); border-radius: var(--radius-sm); border-left: 3px solid ' + catColor + ';';
+                    card.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <span style="font-size: 0.75rem; font-weight: 600; color: ${catColor}; text-transform: uppercase; letter-spacing: 0.5px;">${catLabel}</span>
+                            <span style="font-size: 0.75rem; color: var(--text-muted);">${date}</span>
+                        </div>
+                        <p style="color: var(--text-primary); font-size: 0.88rem; line-height: 1.4; margin: 0;">${data.message.length > 120 ? data.message.substring(0, 120) + '…' : data.message}</p>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (err) {
+                console.error('Error loading past questions:', err);
+                container.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem; font-style: italic;">Could not load past questions.</p>';
+            }
+        }
+        function waitForAuth() {
+            const check = setInterval(() => {
+                if (window.auth) {
+                    clearInterval(check);
+                    const { onAuthStateChanged } = window; 
+                    import("https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js").then(({ onAuthStateChanged }) => {
+                        onAuthStateChanged(window.auth, (user) => {
+                            if (user) {
+                                const nameInput = document.getElementById('support-name');
+                                const emailInput = document.getElementById('support-email');
+                                if (nameInput && !nameInput.value) nameInput.value = user.displayName || '';
+                                if (emailInput && !emailInput.value) emailInput.value = user.email || '';
+                                loadPastQuestions();
+                            }
+                        });
+                    });
+                }
+            }, 100);
+            setTimeout(() => clearInterval(check), 5000);
+        }
+        document.addEventListener('DOMContentLoaded', waitForAuth);
+    </script>
+</body>
+</html>
