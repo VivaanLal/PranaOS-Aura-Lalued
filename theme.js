@@ -18,6 +18,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 navMenu.classList.remove('active');
             }
         });
+        navMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburgerBtn.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
     }
     const themeToggleBtn = document.getElementById('theme-toggle');
     const htmlEl = document.documentElement;

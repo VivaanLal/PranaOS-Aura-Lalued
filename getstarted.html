@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="theme.css?v=2">
     <link rel="shortcut icon" href="favicon.png" type="image/png">
-    <title>PranaOS - Coming Soon</title>
-    <meta name="description" content="This feature is coming soon to PranaOS. Stay tuned for updates.">
+    <title>PranaOS - Get Started</title>
+    <meta name="description" content="Create your PranaOS account or sign in to access intelligent urban ecosystem monitoring.">
 </head>
 <body>
     <div class="bg-mesh"></div>
@@ -35,13 +35,31 @@
             <span></span>
         </div>
     </header>
-    <main style="display: flex; justify-content: center; align-items: center; min-height: 50vh;">
-        <div class="liquid-glass" style="padding: 60px; text-align: center; max-width: 600px; border-top: 4px solid var(--accent-violet);">
-            <div style="font-size: 3rem; margin-bottom: 20px;">🚀</div>
-            <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 16px;">Stay Tuned!</h2>
-            <p style="color: var(--text-secondary); font-size: 1.1rem; line-height: 1.6;">
-                We are working hard to bring you exciting new features. Check back soon for the latest updates to PranaOS.
-            </p>
+    <main style="display: flex; justify-content: center; align-items: center; min-height: 70vh; flex-direction: column;">
+        <div class="liquid-glass" style="width: 100%; max-width: 500px; padding: 50px 40px; text-align: center; border-top: 4px solid var(--accent-emerald);">
+            <h1 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 10px; background: linear-gradient(135deg, var(--accent-emerald), var(--accent-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Start Your PranaOS Journey</h1>
+            <p style="color: var(--text-secondary); font-size: 1rem; margin-bottom: 30px;">Enter your email to create an account or sign in</p>
+            
+            <form id="get-started-form" onsubmit="event.preventDefault();">
+                <div style="margin-bottom: 20px;">
+                    <input type="email" id="landing-email" placeholder="you@example.com" required style="width: 100%; padding: 14px 18px; background: var(--bg-deep); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); color: var(--text-primary); font-size: 1rem; outline: none; transition: all 0.3s ease;">
+                </div>
+                <div id="landing-error" style="color: var(--danger); font-size: 0.85rem; margin-bottom: 15px; display: none;"></div>
+                <button type="submit" id="landing-submit-btn" class="b-pri" style="width: 100%; padding: 15px; margin-bottom: 20px;">
+                    Continue with Email
+                </button>
+                
+                <div style="display: flex; align-items: center; margin: 25px 0;">
+                    <hr style="flex: 1; border: none; border-top: 1px solid var(--border-subtle);">
+                    <span style="color: var(--text-muted); font-size: 0.85rem; padding: 0 15px;">OR</span>
+                    <hr style="flex: 1; border: none; border-top: 1px solid var(--border-subtle);">
+                </div>
+                
+                <button type="button" id="landing-google-btn" class="b-sec" style="width: 100%; padding: 14px;">
+                    <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+                    Continue with Google
+                </button>
+            </form>
         </div>
     </main>
     <footer class="liquid-glass" style="margin-top: auto; border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 40px 6%;">
@@ -55,8 +73,8 @@
             <div>
                 <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 16px; color: var(--accent-cyan);">Contact Us</h3>
                 <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 8px;"><strong>Name:</strong> Vivaan Lal</p>
-                <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 8px;"><strong>Email:</strong> <a href='mailto:vivaanlal21@gmail.com' style='color: var(--accent-emerald); text-decoration: none;'>vivaanlal21@gmail.com</a></p>
-                <p style="color: var(--text-secondary); font-size: 0.95rem;"><strong>Phone:</strong> <a href='tel:+917676869907' style='color: var(--accent-emerald); text-decoration: none;'>+91 76768 69907</a></p>
+                <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 8px;"><strong>Email:</strong> <a href="mailto:vivaanlal21@gmail.com" style="color: var(--text-secondary); text-decoration: none;">vivaanlal21@gmail.com</a></p>
+                <p style="color: var(--text-secondary); font-size: 0.95rem;"><strong>Phone:</strong> <a href="tel:+917676869907" style="color: var(--text-secondary); text-decoration: none;">+91 76768 69907</a></p>
             </div>
             <div>
                 <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 16px; color: var(--accent-violet);">Sitemap</h3>
