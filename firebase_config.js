@@ -8,8 +8,7 @@ import {
     signOut,
     updateProfile,
     GoogleAuthProvider,
-    signInWithRedirect,
-    getRedirectResult,
+    signInWithPopup,
     sendPasswordResetEmail,
     sendEmailVerification,
     fetchSignInMethodsForEmail,
@@ -232,21 +231,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!auth) return;
                 window.isSigningIn = true;
                 const provider = new GoogleAuthProvider();
-                signInWithRedirect(auth, provider);
+                signInWithPopup(auth, provider)
+                    .then((result) => {
+                        window.location.href = "dash.html";
+                    })
+                    .catch((error) => {
+                        window.isSigningIn = false;
+                        if (errorDiv) {
+                            if (error.code === 'auth/popup-blocked') {
+                                errorDiv.innerHTML = "<strong>Popup Blocked:</strong> Please allow popups for this site in your browser's URL bar to sign in with Google.";
+                            } else {
+                                errorDiv.textContent = error.message;
+                            }
+                            errorDiv.style.display = "block";
+                        }
+                    });
             });
         }
-        
-        getRedirectResult(auth).then((result) => {
-            if (result) {
-                window.location.href = "dash.html";
-            }
-        }).catch((error) => {
-            window.isSigningIn = false;
-            if (errorDiv && error.code !== 'auth/redirect-cancelled-by-user') {
-                errorDiv.textContent = error.message;
-                errorDiv.style.display = "block";
-            }
-        });
         const forgotPwLink = document.getElementById('auth-forgot-pw');
         if (forgotPwLink) {
             forgotPwLink.addEventListener('click', (e) => {
@@ -546,18 +547,20 @@ document.addEventListener('DOMContentLoaded', () => {
         landingGoogleBtn.addEventListener('click', () => {
             if (!auth) return;
             const provider = new GoogleAuthProvider();
-            signInWithRedirect(auth, provider);
-        });
-
-        getRedirectResult(auth).then((result) => {
-            if (result) {
-                window.location.href = "dash.html";
-            }
-        }).catch((error) => {
-            if (landingError && error.code !== 'auth/redirect-cancelled-by-user') {
-                landingError.textContent = error.message;
-                landingError.style.display = 'block';
-            }
+            signInWithPopup(auth, provider)
+                .then(() => {
+                    window.location.href = "dash.html";
+                })
+                .catch((error) => {
+                    if (landingError) {
+                        if (error.code === 'auth/popup-blocked') {
+                            landingError.innerHTML = "<strong>Popup Blocked:</strong> Please allow popups for this site in your browser's URL bar to sign in with Google.";
+                        } else {
+                            landingError.textContent = error.message;
+                        }
+                        landingError.style.display = 'block';
+                    }
+                });
         });
     }
 });
