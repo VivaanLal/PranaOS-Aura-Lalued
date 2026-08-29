@@ -8,7 +8,8 @@ import {
     signOut,
     updateProfile,
     GoogleAuthProvider,
-    signInWithPopup,
+    signInWithRedirect,
+    getRedirectResult,
     sendPasswordResetEmail,
     sendEmailVerification,
     fetchSignInMethodsForEmail,
@@ -231,19 +232,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!auth) return;
                 window.isSigningIn = true;
                 const provider = new GoogleAuthProvider();
-                signInWithPopup(auth, provider)
-                    .then((result) => {
-                        window.location.href = "dash.html";
-                    })
-                    .catch((error) => {
-                        window.isSigningIn = false;
-                        if (errorDiv) {
-                            errorDiv.textContent = error.message;
-                            errorDiv.style.display = "block";
-                        }
-                    });
+                signInWithRedirect(auth, provider);
             });
         }
+        
+        getRedirectResult(auth).then((result) => {
+            if (result) {
+                window.location.href = "dash.html";
+            }
+        }).catch((error) => {
+            window.isSigningIn = false;
+            if (errorDiv && error.code !== 'auth/redirect-cancelled-by-user') {
+                errorDiv.textContent = error.message;
+                errorDiv.style.display = "block";
+            }
+        });
         const forgotPwLink = document.getElementById('auth-forgot-pw');
         if (forgotPwLink) {
             forgotPwLink.addEventListener('click', (e) => {
@@ -543,16 +546,18 @@ document.addEventListener('DOMContentLoaded', () => {
         landingGoogleBtn.addEventListener('click', () => {
             if (!auth) return;
             const provider = new GoogleAuthProvider();
-            signInWithPopup(auth, provider)
-                .then(() => {
-                    window.location.href = "dash.html";
-                })
-                .catch((error) => {
-                    if (landingError) {
-                        landingError.textContent = error.message;
-                        landingError.style.display = 'block';
-                    }
-                });
+            signInWithRedirect(auth, provider);
+        });
+
+        getRedirectResult(auth).then((result) => {
+            if (result) {
+                window.location.href = "dash.html";
+            }
+        }).catch((error) => {
+            if (landingError && error.code !== 'auth/redirect-cancelled-by-user') {
+                landingError.textContent = error.message;
+                landingError.style.display = 'block';
+            }
         });
     }
 });
